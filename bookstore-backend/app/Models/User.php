@@ -20,7 +20,6 @@ class User extends Authenticatable
      */
     protected $fillable = [
         'name',
-        'username',
         'email',
         'password',
         'role'
@@ -45,5 +44,10 @@ class User extends Authenticatable
         return [
             'password' => 'hashed',
         ];
+    }
+
+    public function BorrowedBooks()
+    {
+        return $this->hasMany(BorrowedBook::class);
     }
 }
