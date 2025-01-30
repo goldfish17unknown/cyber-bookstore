@@ -15,9 +15,6 @@ export const AdminLayout: React.FC<LayoutProps> = ({ children }) => {
             {children}
         </main>
     </SidebarProvider>
-    // <div>
-    //     hello this is testing
-    //     {children}
-    // </div>
+
   )
 }
