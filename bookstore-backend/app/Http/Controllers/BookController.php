@@ -79,7 +79,6 @@ class BookController extends Controller
                 'error' => $e->getMessage()
             ], 404);
         }
-       
     }
 
 
@@ -148,4 +147,5 @@ class BookController extends Controller
             ], 500);
         }
     }
+    
 }

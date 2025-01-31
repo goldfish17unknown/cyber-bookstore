@@ -37,7 +37,6 @@ Route::get('authors/{id}/books', [AuthorController::class, 'getBooksByAuthors'])
 
 
 //Book routes
-Route::get('books', [BookController::class, 'index']);
 Route::get('books/{id}', [BookController::class, 'show']);
 Route::post('books', [BookController::class, 'store']);
 Route::get('books/{id}/author', [BookController::class, 'getBookAuthor']);

@@ -25,8 +25,27 @@ class AuthorService
 
     public function createAuthor($data)
     {
-        $author = Author::create($data);
+        $author = new Author();
+        $author->name = $data["name"];
+        $author->bio = $data["bio"];
+        
+        if(isset($data["image"])){
+            $author->image = $this->saveAuthorImage($data["image"]);
+        }
+        
+        $author->save();
         return $author;
+    }
+
+    private function saveAuthorImage($imageFile){
+        $imageName = time().'.'.$imageFile->extension();
+        $imageFile->move(public_path('images'), $imageName);
+        $imagePath = 'images/' . $imageName;
+        return $imagePath;
+    }
+
+    private function deleteAuthorImage(){
+
     }
 
     public function updateAuthor($id, $data)

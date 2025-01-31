@@ -1,6 +1,7 @@
 "use client"
 import {Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
-import { BookType,  UserPen, User, HousePlus, ChartColumnStacked } from 'lucide-react';
+import { BookType,  UserPen, User, HousePlus, ChartColumnStacked, LogOut } from 'lucide-react';
+import Link from "next/link";
 
 const items = [
     {
@@ -20,7 +21,7 @@ const items = [
     },
     {
         title: "Authors",
-        url: "#",
+        url: "/admin/authors",
         icon: UserPen,
     },
     {
@@ -32,7 +33,7 @@ const items = [
 
 const AdminSideBar: React.FC = () => {
     return (
-        <Sidebar className="bg-stone-800">
+        <Sidebar variant="floating" collapsible="icon">
             <SidebarContent>
 
             <SidebarGroup>
@@ -43,10 +44,10 @@ const AdminSideBar: React.FC = () => {
                         {items.map((item) => (
                             <SidebarMenuItem key={item.title}>
                                 <SidebarMenuButton asChild>
-                                    <a href={item.url}>
+                                    <Link href={item.url}>
                                         <item.icon />
                                         <span>{item.title}</span>
-                                    </a>
+                                    </Link>
                                 </SidebarMenuButton>
                             </SidebarMenuItem>
                         ))}
@@ -60,6 +61,7 @@ const AdminSideBar: React.FC = () => {
             <SidebarFooter>
             <SidebarMenuButton >
                 <a href="" className="ml-auto flex items-center text-2xl">
+                    <LogOut />
                     <span>Logout</span>
                 </a>
             </SidebarMenuButton>
