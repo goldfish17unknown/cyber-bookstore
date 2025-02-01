@@ -26,9 +26,7 @@ class AuthorRequest extends FormRequest
         return [
             'name' => 'required|string|max:225',
             'bio' => 'required|string',
-            'image' => "string"
-            //TODO:: This is temporary image, for testing
-            // 'image' => 'required|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg',
         ];
     }
 
