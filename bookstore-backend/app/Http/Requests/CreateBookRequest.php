@@ -27,7 +27,7 @@ class CreateBookRequest extends FormRequest
 
         return [
             'title' => 'required|string|max:225',
-            'description' => 'string',
+            'description' => 'string|required',
             //TODO:: This is temporary image, for testing
             'image' => 'string',
             // 'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',

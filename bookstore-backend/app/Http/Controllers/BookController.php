@@ -148,4 +148,29 @@ class BookController extends Controller
             ], 500);
         }
     }
+
+    
+    public function destroy($id){
+        try{
+            DB::beginTransaction();
+            $book = $this->bookService->deleteBook($id);
+            DB::commit();
+            return response()->json([
+                "message"=> "book deleted successfully"
+            ], 200);
+        } catch (ModelNotFoundException $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Book not found'
+            ], 404);
+        } catch (Exception $e){
+            DB::rollBack();
+            Log::error($e->getMessage());
+            Log::info('Error in BookController@destroy');
+            return response()->json([
+                'message' => 'Failed to delete Book',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
 }

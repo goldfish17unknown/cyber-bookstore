@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 const BooksPage: React.FC = () => {
     const [books, setBooks] = useState<Book[]>([]);
     const [error, setError] = useState<string | null>(null);
+    const [loading, setLoading] = useState<boolean>(true);
 
     useEffect(() => {
         fetchBooks();
@@ -27,23 +28,36 @@ const BooksPage: React.FC = () => {
             } else {
                 setError("An unknown error occurred");
             }
+        } finally {
+            setLoading(false);
         }
+    }
+    if (loading){
+        return <p>Loading...</p>
+    }
+
+    if (error){
+        return  <p>{error}</p>
     }
 
     return (
         <div>
             <h1>Book List</h1>
-            {error && <p>{error}</p>}
-            <div>
-                {books.map((book) => (
-                    <div key={book.id}>
-                        <h2>{book.title}</h2>
-                        <p>{book.description}</p>
-                        <p>{book.category?.name}</p>
-                        <p>{book.author?.name}</p>
-                    </div>
-                ))}
-            </div>
+            
+            {books.length === 0 ? (
+                <p>No books available</p>
+            ) : (
+                <div>
+                    {books.map((book) => (
+                        <div key={book.id}>
+                            <h2>{book.title}</h2>
+                            <p>{book.description}</p>
+                            <p>{book.category?.name}</p>
+                            <p>{book.author?.name}</p>
+                        </div>
+                    ))}
+                </div>
+            )}
         </div>
     )
 }

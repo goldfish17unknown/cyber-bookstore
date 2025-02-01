@@ -44,3 +44,4 @@ Route::get('books/{id}/author', [BookController::class, 'getBookAuthor']);
 //TODO::To add borrowed history
 Route::get('categories/{id}/books', [BookController::class, 'showBooksByCategory']);
 Route::put('books/{id}', [BookController::class, 'update']);
+Route::delete('books/{id}', [BookController::class, 'destroy']);

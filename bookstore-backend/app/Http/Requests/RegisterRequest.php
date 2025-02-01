@@ -26,7 +26,6 @@ class RegisterRequest extends FormRequest
     {
         return [
             'name' => 'required|string|max:225',
-            'username' => 'required|string|max:225|unique:users,username',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|min:8|confirmed',
         ];
@@ -36,7 +35,6 @@ class RegisterRequest extends FormRequest
     {
         return [
             'name.required' => 'Name field is required',
-            'username.required' => 'Username field is required',
             'email.required' => 'Email field is required',
             'password.required' => 'Password field is required',
             'password.confirmed' => 'Password does not match'
