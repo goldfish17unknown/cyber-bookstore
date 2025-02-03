@@ -1,4 +1,5 @@
 import AuthorsTable from "@/components/custom/admin/authors/AuthorsTable";
+import CommonPagination from "@/components/custom/admin/CommonPagination";
 import { AdminLayout } from "@/components/layouts/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { NextPageWithLayout } from "@/pages/_app";
@@ -12,6 +13,12 @@ const AdminAuthorManagement: NextPageWithLayout = () => {
     const [authors, setAuthors] = useState<Author[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
     const [error, setError] = useState<string | null>(null);
+
+    const [currentPage, setCurrentPage] = useState<number>(1);
+    const itemsPerPage = 6;
+
+    const authorsData = authors.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
+    const totalPages = Math.ceil(authors.length / itemsPerPage);    
 
 
     const fetchAuthorsData = async () => {
@@ -32,6 +39,10 @@ const AdminAuthorManagement: NextPageWithLayout = () => {
     useEffect(() => {
         fetchAuthorsData();
     }, [])
+
+    const handlePageChange = (page: number) => {
+        setCurrentPage(page);
+    }
         
     
     return (
@@ -44,9 +55,13 @@ const AdminAuthorManagement: NextPageWithLayout = () => {
                 <Link href="/admin/authors/create">
                 <Button>Create <UserPlus /></Button>
                 </Link>
-                
+
             </div>
-            <AuthorsTable authors={authors} />
+            <AuthorsTable authors={authorsData} />
+            <CommonPagination 
+            currentPage={currentPage}
+            totalPages={totalPages}
+            onPageChange={setCurrentPage}/>
         </div>
         )
     }
