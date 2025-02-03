@@ -1,4 +1,5 @@
 import AuthorEditModal from "@/components/custom/admin/authors/AuthorEditModal";
+import CommonDeleteModal from "@/components/custom/admin/CommonDeleteModal";
 import { AdminLayout } from "@/components/layouts/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { NextPageWithLayout } from "@/pages/_app";
@@ -38,6 +39,23 @@ const AuthorsDetailPage: NextPageWithLayout = () => {
         }
     }
 
+    const handleDelete = async (id: number) => {
+        try {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/authors/${id}`, {
+                method: "DELETE"
+            });
+            if(!response.ok){
+                throw new Error('Failed to delete author.');
+            }
+            router.push({
+                pathname: '/admin/authors',
+                query: {successDelete: "Author deleted successfully!"} 
+            });
+        } catch (error) {
+            return; 
+        }
+    }
+
     return (
         <div>
             <section className="p-5 h-auto grid grid-cols-7 border-b-2 border-gray-200">
@@ -64,7 +82,8 @@ const AuthorsDetailPage: NextPageWithLayout = () => {
                     <div className="flex justify-end mt-4">
                         <Button variant={"yellow"} className="ms-4">Edit</Button>
                         {/* <AuthorEditModal /> */}
-                        <Button variant={"red"} className="ms-4">Delete</Button>
+                        
+                        <CommonDeleteModal deleteItemID={author?.id} deleteHandler={handleDelete} />
                     </div>
                     
                 </div>

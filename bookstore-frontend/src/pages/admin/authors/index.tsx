@@ -6,7 +6,10 @@ import { NextPageWithLayout } from "@/pages/_app";
 import { Author } from "@/types/common";
 import { UserPlus } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 import { ReactElement, useEffect, useState } from "react";
+import toast, { Toaster } from 'react-hot-toast';
+
 
 const AdminAuthorManagement: NextPageWithLayout = () => {
 
@@ -18,7 +21,11 @@ const AdminAuthorManagement: NextPageWithLayout = () => {
     const itemsPerPage = 6;
 
     const authorsData = authors.slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
-    const totalPages = Math.ceil(authors.length / itemsPerPage);    
+    const totalPages = Math.ceil(authors.length / itemsPerPage);
+    
+    const router = useRouter();
+    const { successDelete } = router.query;
+    const [hasShownToast, setHasShownToast] = useState<boolean>(false);
 
 
     const fetchAuthorsData = async () => {
@@ -36,14 +43,40 @@ const AdminAuthorManagement: NextPageWithLayout = () => {
         }    
     }
 
+
     useEffect(() => {
         fetchAuthorsData();
     }, [])
 
-    const handlePageChange = (page: number) => {
-        setCurrentPage(page);
-    }
-        
+
+    useEffect(() => {
+        if (successDelete && !hasShownToast) {
+            setHasShownToast(true);
+            console.log(hasShownToast)
+            toast.success('Look at my styles.', {
+                style: {
+                    border: '1px solid #713200',
+                    padding: '16px',
+                    color: '#713200',
+                },
+                iconTheme: {
+                    primary: '#713200',
+                    secondary: '#FFFAEE',
+                },
+            });
+            
+            
+            router.replace(router.pathname, undefined, { shallow: true });
+        }
+    }, [successDelete, hasShownToast]);
+
+
+    //reset the toast state
+    // useEffect(() => {
+    //     setHasShownToast(false);
+    // }, [hasShownToast]);
+
+
     
     return (
         <div className="w-full mt-10">
