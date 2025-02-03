@@ -1,10 +1,14 @@
 import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Author } from "@/types/common";
+import Link from "next/link";
+
 
 
 interface AuthorsTableProps {
     authors: Author[];
+    // loading: boolean;
+    // error: string;
 }
 
 const AuthorsTable: React.FC<AuthorsTableProps> = ({ authors }) => {
@@ -27,8 +31,12 @@ const AuthorsTable: React.FC<AuthorsTableProps> = ({ authors }) => {
                             alt="author" className="w-12 h-12 rounded-full" />
                         </TableCell>
                         <TableCell>{author.name}</TableCell>
-                        <TableCell>
-                            <Button variant={"green"} size={"sm"}>View</Button>
+                        <TableCell>   
+                            <Button variant={"green"} size={"sm"} asChild>
+                                <Link href={`/admin/authors/${author.id}`}>
+                                    View
+                                </Link>
+                            </Button>
                         </TableCell>
                     </TableRow>
                 ))}  
