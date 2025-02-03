@@ -5,28 +5,33 @@ import Link from "next/link";
 
 const items = [
     {
+        // to manage the books
         title: "Books",
-        url: "#",
+        url: "/admin/books",
         icon: BookType
     },
     {
+        // to manage borrows and returns of the books
         title: "Borrows and Returns",
-        url: "#",
+        url: "/admin/borrows-returns",
         icon:  HousePlus
     },
     {
+        // to manage the users
         title: "User Management",
-        url: "#",
+        url: "/admin/users-management",
         icon: User
     },
     {
+        // to manage the authors
         title: "Authors",
         url: "/admin/authors",
         icon: UserPen,
     },
     {
+        // to manage the categories
         title: "Categories",
-        url: "#",
+        url: "/admin/categories",
         icon: ChartColumnStacked
     }
 ]
