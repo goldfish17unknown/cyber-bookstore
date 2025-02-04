@@ -3,15 +3,16 @@
 namespace App\Http\Controllers;
 
 use Exception;
+use App\Models\Book;
 use App\Service\BookService;
-use Illuminate\Http\Request;
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use App\Http\Resources\BookResource;
 use App\Http\Resources\AuthorResource;
 use App\Http\Requests\CreateBookRequest;
-use App\Models\Book;
+use App\Http\Resources\BookWithStatusResource;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class BookController extends Controller
@@ -28,6 +29,25 @@ class BookController extends Controller
         , 200);
     }
 
+    public function bookWithPaginate(){
+        $books = $this->bookService->allBooksWithPagination(6);
+        return response()->json([
+            'data' => BookWithStatusResource::collection($books),
+            'current_page' => $books->currentPage(),
+            'last_page' => $books->lastPage(),
+            'has_more_pages' => $books->hasMorePages(),
+        ], 200);
+    }
+
+    public function bookWithPaginateHome(){
+        $books = $this->bookService->allBooksWithPagination(12);
+        return response()->json([
+            'data' => BookWithStatusResource::collection($books),
+            'current_page' => $books->currentPage(),
+            'last_page' => $books->lastPage(),
+            'has_more_pages' => $books->hasMorePages(),
+        ], 200);
+    }
 
     public function show($id){
         try{

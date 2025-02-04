@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\CategoryController;
+use App\Service\BookService;
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
@@ -28,8 +29,8 @@ Route::delete('categories/{id}', [CategoryController::class, 'destroy']);
 
 
 // Author routes
-Route::get('authors', [AuthorController::class, 'index']);
-Route::get('authors/{id}', [AuthorController::class, 'show']);
+
+
 Route::post('authors', [AuthorController::class, 'store']);
 Route::put('authors/{id}', [AuthorController::class, 'update']);
 Route::delete('authors/{id}', [AuthorController::class, 'destroy']);
@@ -46,4 +47,15 @@ Route::get('categories/{id}/books', [BookController::class, 'showBooksByCategory
 Route::put('books/{id}', [BookController::class, 'update']);
 Route::delete('books/{id}', [BookController::class, 'destroy']);
 
-Route::get('books/withStatus', [BookController::class, 'index']);
+
+
+Route::get('books/withStatus', [BookController::class, 'bookWithPaginateHome']);
+
+// For admin
+// * books
+Route::get('books/admin/withStatus', [BookController::class, 'bookWithPaginate']);
+
+
+// * authors
+Route::get('authors', [AuthorController::class, 'index']);
+Route::get('authors/{id}', [AuthorController::class, 'show']);

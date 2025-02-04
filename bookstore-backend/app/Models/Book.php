@@ -33,7 +33,7 @@ class Book extends Model
     }
 
     public function getBorrowStatusAttribute(){
-        $latestBorrowedBook = $this->borrowedBooks()->latest()->first();
+        $latestBorrowedBook = $this->borrowedBook()->latest()->first();
 
         if (!$latestBorrowedBook) {
             return 'Available';

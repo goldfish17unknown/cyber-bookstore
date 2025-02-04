@@ -21,10 +21,9 @@ class BookService
     }
 
 
-    public function allBooksWithStatusWithPagination($numberPerPage){
+    public function allBooksWithPagination($numberPerPage){
         $books = Book::paginate($numberPerPage);
-
-        $books->getCollec
+        return $books;
     }
 
     public function getBook($id){
