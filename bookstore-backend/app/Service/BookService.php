@@ -2,8 +2,10 @@
 
 namespace App\Service;
 
+use Carbon\Carbon;
 use App\Models\Book;
 use App\Models\Category;
+use App\Models\BorrowedBook;
 
 class BookService
 {
@@ -16,6 +18,13 @@ class BookService
         $books = Book::all();
         $books->load(['author', 'category']);
         return $books;
+    }
+
+
+    public function allBooksWithStatusWithPagination($numberPerPage){
+        $books = Book::paginate($numberPerPage);
+
+        $books->getCollec
     }
 
     public function getBook($id){

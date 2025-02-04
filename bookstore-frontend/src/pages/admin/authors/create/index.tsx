@@ -21,24 +21,31 @@ const AdminAuthorCreate: NextPageWithLayout = () => {
                 formData.append("image", image);
             }
 
-            const response = await fetch("http://localhost:8000/api/authors", {
+            const response = await fetch(`http://localhost:8000/api/authors`, {
                 method: 'POST',
                 body: formData,
             });
-
             if (!response.ok){
                 throw new Error("Failed to create data")
             }
-
             const data = await response.json();
 
-            // router.push('admin/authors');
+            if (data){
+                router.push({
+                    pathname: '/admin/authors',
+                    query: { successCreate: "Author created successfully!" }
+                });
+            }
 
         } catch (error){
             console.error('Error creating author:', error);
         } finally{
             //TODO:: i want the spinner behind the create button
+            
+
+            
         }
+    
     }
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {

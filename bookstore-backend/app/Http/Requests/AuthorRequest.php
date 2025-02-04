@@ -24,7 +24,7 @@ class AuthorRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'name' => 'required|string|max:225',
+            'name' => 'required|string|max:225|unique:categories,name',
             'bio' => 'required|string',
             'image' => 'image|mimes:jpeg,png,jpg,gif,svg',
         ];

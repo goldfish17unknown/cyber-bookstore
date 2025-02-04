@@ -1,15 +1,16 @@
 import { Button } from "@/components/ui/button"
-import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger, DialogClose } from "@/components/ui/dialog"
 
 interface DeleteModalProps {
     deleteHandler: (id: number) => void;
     deleteItemID: number | undefined;
+
 }
 
 
 const CommonDeleteModal: React.FC<DeleteModalProps> = ({ deleteHandler, deleteItemID }) => {
     return (
-        <Dialog>
+        <Dialog >
             <DialogTrigger asChild>
                 <Button variant={"red"} className="ms-4">Delete</Button>
             </DialogTrigger>
@@ -21,7 +22,9 @@ const CommonDeleteModal: React.FC<DeleteModalProps> = ({ deleteHandler, deleteIt
                     </DialogDescription>
                 </DialogHeader>
                 <DialogFooter>
-                    <Button onClick={() => deleteItemID !== undefined && deleteHandler(deleteItemID)}>Delete</Button>
+                    <DialogClose>
+                        <Button onClick={() => deleteItemID !== undefined && deleteHandler(deleteItemID)}>Delete</Button>
+                    </DialogClose>
                 </DialogFooter>
             </DialogContent>
         </Dialog>

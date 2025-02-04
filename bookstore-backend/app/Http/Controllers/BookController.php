@@ -147,7 +147,6 @@ class BookController extends Controller
             ], 500);
         }
     }
-<<<<<<< HEAD
 
     
     public function destroy($id){
@@ -173,7 +172,4 @@ class BookController extends Controller
             ], 500);
         }
     }
-=======
-    
->>>>>>> c2dd98a9caee47ae6fc3ff296504fa4a07e860f6
 }

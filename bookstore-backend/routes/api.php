@@ -37,6 +37,7 @@ Route::get('authors/{id}/books', [AuthorController::class, 'getBooksByAuthors'])
 
 
 //Book routes
+Route::get('books', [BookController::class, 'index']);
 Route::get('books/{id}', [BookController::class, 'show']);
 Route::post('books', [BookController::class, 'store']);
 Route::get('books/{id}/author', [BookController::class, 'getBookAuthor']);
@@ -44,3 +45,5 @@ Route::get('books/{id}/author', [BookController::class, 'getBookAuthor']);
 Route::get('categories/{id}/books', [BookController::class, 'showBooksByCategory']);
 Route::put('books/{id}', [BookController::class, 'update']);
 Route::delete('books/{id}', [BookController::class, 'destroy']);
+
+Route::get('books/withStatus', [BookController::class, 'index']);

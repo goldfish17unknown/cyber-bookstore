@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class Book extends Model
@@ -29,5 +30,23 @@ class Book extends Model
     public function borrowedBook()
     {
         return $this->hasMany(BorrowedBook::class);
+    }
+
+    public function getBorrowStatusAttribute(){
+        $latestBorrowedBook = $this->borrowedBooks()->latest()->first();
+
+        if (!$latestBorrowedBook) {
+            return 'Available';
+        }
+
+        if (!$latestBorrowedBook->returned_at) {
+            return 'Unavailable';
+        }
+
+        if (Carbon::parse($latestBorrowedBook->due_date)->isPast()) {
+            return 'Exceeded due date';
+        }
+
+        return 'Available';
     }
 }

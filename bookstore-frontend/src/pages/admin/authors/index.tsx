@@ -42,33 +42,32 @@ const AdminAuthorManagement: NextPageWithLayout = () => {
             setLoading(false);
         }    
     }
-
-
     useEffect(() => {
         fetchAuthorsData();
     }, [])
 
 
-    useEffect(() => {
-        if (successDelete && !hasShownToast) {
-            setHasShownToast(true);
-            console.log(hasShownToast)
-            toast.success('Look at my styles.', {
-                style: {
-                    border: '1px solid #713200',
-                    padding: '16px',
-                    color: '#713200',
-                },
-                iconTheme: {
-                    primary: '#713200',
-                    secondary: '#FFFAEE',
-                },
-            });
+    // to fix the toast
+    // useEffect(() => {
+    //     if (successDelete && !hasShownToast) {
+    //         setHasShownToast(true);
+    //         console.log(hasShownToast)
+    //         toast.success('Look at my styles.', {
+    //             style: {
+    //                 border: '1px solid #713200',
+    //                 padding: '16px',
+    //                 color: '#713200',
+    //             },
+    //             iconTheme: {
+    //                 primary: '#713200',
+    //                 secondary: '#FFFAEE',
+    //             },
+    //         });
             
             
-            router.replace(router.pathname, undefined, { shallow: true });
-        }
-    }, [successDelete, hasShownToast]);
+    //         router.replace(router.pathname, undefined, { shallow: true });
+    //     }
+    // }, [successDelete, hasShownToast]);
 
 
     //reset the toast state
