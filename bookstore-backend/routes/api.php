@@ -68,6 +68,6 @@ Route::get('authors/{id}', [AuthorController::class, 'show']);
 //* users
 Route::get('users', [UserController::class, 'index']);
 Route::post('users', [UserController::class, 'store']);
-// user delete 
+Route::delete('users/{id}', [UserController::class, 'delete']);
 //　user edit
 // user detail view with borrowed record

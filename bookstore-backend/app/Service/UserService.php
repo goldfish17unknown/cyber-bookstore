@@ -20,14 +20,33 @@ class UserService
         return $user;
     }
 
-    public function getUser()
+    public function getUser(?string $search = null)
     {
-        $users = User::where('role', 'user')->latest()->get();
-        return $users;
+    $users = User::where('role', 'user');
+
+        if (!empty($search)) {
+            $users->where(function ($query) use ($search) {
+                $query->where('name', 'LIKE', "%{$search}%")
+                      ->orWhere('email', 'LIKE', "%{$search}%");
+            });
+        }
+
+        return $users->latest()->paginate(10);
     }
 
     public function deleteUser($id)
     {
         $user = User::findOrFail($id);
+        $user->delete();
+        return $user;
     }
+
+    public function searchUser($query, $search){
+
+
+
+
+    }
+
+    
 }
