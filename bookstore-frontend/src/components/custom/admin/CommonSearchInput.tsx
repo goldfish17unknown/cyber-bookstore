@@ -4,9 +4,10 @@ import { Input } from '@/components/ui/input';
 interface SearchInputProps {
     searchValue: string;
     setSearchValue: (search: string) => void
+    placeholder: string
 }
 
-const SearchInput: React.FC<SearchInputProps> = ({ searchValue, setSearchValue}) => {
+const SearchInput: React.FC<SearchInputProps> = ({ searchValue, setSearchValue, placeholder }) => {
   return (
     <div className="relative w-full max-w-md">
       <div className="absolute inset-y-0 left-3 flex items-center text-gray-500">
@@ -14,7 +15,7 @@ const SearchInput: React.FC<SearchInputProps> = ({ searchValue, setSearchValue})
       </div>
       <Input
         type="text"
-        placeholder="Search..."
+        placeholder={placeholder}
         className="pl-10" 
         value={searchValue}
         onChange={(e) => setSearchValue(e.target.value)}

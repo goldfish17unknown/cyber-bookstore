@@ -6,7 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class CreateBookRequest extends FormRequest
+class BorrowedBookRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,24 +23,19 @@ class CreateBookRequest extends FormRequest
      */
     public function rules(): array
     {
-        $bookId = $this->route('id');
-
         return [
-            'title' => 'required|string|max:225',
-            'description' => 'string|required',
-            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'isbn' => 'required|string|unique:books,isbn,' . $bookId,
-            'author_id' => 'required|exists:authors,id',
-            'category_id' => 'nullable|exists:categories,id',
+            'user_id' => 'required|exists:users.id',
+            'book_id' => 'required|exists:books.id'
         ];
     }
 
     public function messages(): array
     {
         return [
-            //
+
         ];
     }
+
 
     public function failedValidation(Validator $validator)
     {

@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\AuthorController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\UserController;
 use App\Service\BookService;
 
 // Route::get('/user', function (Request $request) {
@@ -59,3 +60,14 @@ Route::get('books/admin/withStatus', [BookController::class, 'bookWithPaginate']
 // * authors
 Route::get('authors', [AuthorController::class, 'index']);
 Route::get('authors/{id}', [AuthorController::class, 'show']);
+
+
+
+
+
+//* users
+Route::get('users', [UserController::class, 'index']);
+Route::post('users', [UserController::class, 'store']);
+// user delete 
+//　user edit
+// user detail view with borrowed record

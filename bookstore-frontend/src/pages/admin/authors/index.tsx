@@ -35,6 +35,7 @@ const AdminAuthorManagement: NextPageWithLayout = () => {
                 throw new Error('Failed to fetch datas.');
             }
             const data = await response.json();
+        
             setAuthors(data)
         } catch (error){
             setError(error instanceof Error ? error.message : "Unknown error")
@@ -45,35 +46,6 @@ const AdminAuthorManagement: NextPageWithLayout = () => {
     useEffect(() => {
         fetchAuthorsData();
     }, [])
-
-
-    // to fix the toast
-    // useEffect(() => {
-    //     if (successDelete && !hasShownToast) {
-    //         setHasShownToast(true);
-    //         console.log(hasShownToast)
-    //         toast.success('Look at my styles.', {
-    //             style: {
-    //                 border: '1px solid #713200',
-    //                 padding: '16px',
-    //                 color: '#713200',
-    //             },
-    //             iconTheme: {
-    //                 primary: '#713200',
-    //                 secondary: '#FFFAEE',
-    //             },
-    //         });
-            
-            
-    //         router.replace(router.pathname, undefined, { shallow: true });
-    //     }
-    // }, [successDelete, hasShownToast]);
-
-
-    //reset the toast state
-    // useEffect(() => {
-    //     setHasShownToast(false);
-    // }, [hasShownToast]);
 
 
     

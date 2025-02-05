@@ -97,7 +97,7 @@ class BookController extends Controller
             return response()->json([
                 'message' => 'Book not found',
                 'error' => $e->getMessage()
-            ], 404);
+            ], 500);
         }
     }
 
@@ -118,7 +118,7 @@ class BookController extends Controller
             return response()->json([
                 'message' => 'Category not found',
                 'error' => $e->getMessage()
-            ], 404);
+            ], 500);
         }
     }
 

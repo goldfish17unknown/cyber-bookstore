@@ -25,25 +25,22 @@ const CategoryCreateModal: React.FC<CategoryCreateModal> = ({ createFunction, ca
                     <DialogDescription>
                         Enter the name of the category that you want to create and hit save.
                     </DialogDescription>
-                    <form onSubmit={createFunction}>
-                    <div className="grid gap-4 py-4">
-                        <div className="grid grid-cols-5 items-center gap-4">
-                            <Label htmlFor="name" className="text-right">
-                                Name:
-                            </Label>
-                            <Input id="name" className="col-span-3" value={catName} onChange={(e)=> setCatName(e.target.value)} />
-                        </div>
-                    </div>
-                    <DialogFooter>
-                        
-                        <Button type="submit">Save</Button>
-                        
-                    </DialogFooter>
-
-                    </form>
-                    
                 </DialogHeader>
-                
+                <form onSubmit={createFunction}>
+                <div className="grid gap-4 py-4">
+                    <div className="grid grid-cols-5 items-center gap-4">
+                        <Label htmlFor="name" className="text-right">
+                            Name:
+                        </Label>
+                        <Input id="name" className="col-span-3" value={catName} onChange={(e)=> setCatName(e.target.value)} />
+                    </div>
+                </div>
+                <DialogFooter>
+                    
+                    <Button type="submit">Save</Button>
+                    
+                </DialogFooter>
+                </form>   
             </DialogContent>
         </Dialog>
     )

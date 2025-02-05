@@ -2,11 +2,11 @@
 
 namespace App\Http\Requests;
 
-use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\Exceptions\HttpResponseException;
 
-class CreateBookRequest extends FormRequest
+class UserRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,26 +23,23 @@ class CreateBookRequest extends FormRequest
      */
     public function rules(): array
     {
-        $bookId = $this->route('id');
-
         return [
-            'title' => 'required|string|max:225',
-            'description' => 'string|required',
-            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'isbn' => 'required|string|unique:books,isbn,' . $bookId,
-            'author_id' => 'required|exists:authors,id',
-            'category_id' => 'nullable|exists:categories,id',
+            "name" => "required|string|max:225",
+            "email" => "required|email|unique:users,email"
+            
         ];
     }
 
     public function messages(): array
     {
         return [
-            //
+            'name.required' => 'Name field is required',
+            'email.required' => 'Email field is required'
         ];
     }
 
-    public function failedValidation(Validator $validator)
+
+    protected function failedValidation(Validator $validator)
     {
         throw new HttpResponseException(
             response()->json([

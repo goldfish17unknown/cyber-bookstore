@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class BorrowedBook extends Model
@@ -22,5 +23,14 @@ class BorrowedBook extends Model
     public function book()
     {
         return $this->belongsTo(Book::class);
+    }
+
+    public function getStatusAttribute(){
+        if(is_null($this->returned_at)){
+            return Carbon::now()->greaterThan(Carbon::parse($this->due_at))
+            ? "exceeded due date"
+            : "Not returned";
+        }
+        return "returned";
     }
 }

@@ -82,8 +82,8 @@ const AdminCategoriesManagement: NextPageWithLayout = () => {
 
             <div className="flex flex-col-reverse lg:flex-row justify-between my-10 lg:me-48 gap-4 mx-auto md:w-2/3 sm:w-full">
 
-                <div className="w-full lg:w-auto">
-                  <CommonSearchInput searchValue={search} setSearchValue={setSearch} />
+                <div className="w-full md:w-2/5">
+                  <CommonSearchInput searchValue={search} setSearchValue={setSearch} placeholder={"Search Category by name"} />
                 </div>
 
                 <div className="self-end">
