@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('isbn')->unique(); //international standard book number
             $table->foreignIdFor(Author::class)->constrained()->onDelete('cascade');
             $table->foreignIdFor(Category::class)->nullable()->constrained()->onDelete('set null');  
-            $table->integer('quantity')->default(0);
             $table->timestamps();
         });
     }

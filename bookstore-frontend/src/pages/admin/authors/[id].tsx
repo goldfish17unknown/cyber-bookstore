@@ -20,9 +20,10 @@ const AuthorsDetailPage: NextPageWithLayout = () => {
     }
 
     useEffect(() => {
-        fetchAuthorData();
-
-    }, [])
+        if (id){
+            fetchAuthorData();
+        }
+    }, [id])
 
     const fetchAuthorData = async () => {
         try {

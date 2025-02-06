@@ -1,7 +1,7 @@
 import { Button } from "@/components/ui/button";
-import { TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
+import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import { Book } from "@/types/common";
-import { Link, Table } from "lucide-react";
+import { Link } from "lucide-react";
 
 interface BooksTableProps {
     books: Book[];

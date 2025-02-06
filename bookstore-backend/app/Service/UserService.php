@@ -41,11 +41,18 @@ class UserService
         return $user;
     }
 
-    public function searchUser($query, $search){
+    public function getUserById($id){
+        return User::findOrFail($id);
+    }
 
+    public function getUserBorrowHistory($user){
+        return $user->BorrowedBooks()->get();
+    }
 
-
-
+    public function editUser($id, $data){
+        $user = User::findOrFail($id);
+        $user->update($data);
+        return $user;
     }
 
     

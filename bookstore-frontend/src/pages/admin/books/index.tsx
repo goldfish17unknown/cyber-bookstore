@@ -4,7 +4,7 @@ import { AdminLayout } from "@/components/layouts/AdminLayout";
 import { Button } from "@/components/ui/button";
 import { NextPageWithLayout } from "@/pages/_app";
 import { Book } from "@/types/common";
-import { Link, SmilePlus, UserPlus } from "lucide-react";
+import { SmilePlus } from "lucide-react";
 import { ReactElement, useEffect, useState } from "react";
 
 
@@ -12,30 +12,9 @@ import { ReactElement, useEffect, useState } from "react";
 const AdminBookManagement: NextPageWithLayout = () => { 
     const [books, setBooks] = useState<Book[]>([]);
 
-    const[currentPage, setCurrentPage] = useState<number>(1);
 
-    const[lastPage, setLastPage] = useState<number>(2);
+    const fetchBooks 
 
-
-    const fetchBooksData = async(PageNumber: Number) => {
-       try{
-            const response = await fetch(`localhost:8000/api/books/admin/withStatus?page=${PageNumber}`);
-            if(!response.ok){
-                throw new Error('Failed to fetch datas.');
-            }
-            const data = await response.json();
-            setBooks(data.data)
-            setCurrentPage(data.current_page)
-        } catch (error) {
-            console.error(error);
-        } finally {
-           
-        }
-    }
-
-    useEffect(() => {
-        fetchBooksData(1);
-    }, []);
 
     return (
         <div className="w-full mt-10">

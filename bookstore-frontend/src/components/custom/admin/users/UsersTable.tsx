@@ -2,19 +2,20 @@ import { Button } from "@/components/ui/button";
 import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table";
 import dayMonthYear from "@/lib/dayTime";
 import { User } from "@/types/common";
-import React from "react";
+import React, { useState } from "react";
 import CommonDeleteModal from "../CommonDeleteModal";
 import Link from "next/link";
+import UserEditModal from "./UserEditModal";
 
 interface UsersTableProps {
     users: User[]
     deleteFunction: (id: number) => void;
-    editFunction: (e: React.FormEvent<HTMLFormElement>, id: number, newName: string, newEmail: string) => void;
+    editFunction: (id: number, newName: string, newEmail: string) => void;
 }
 
-const UsersTable: React.FC<UsersTableProps> = ({ users, deleteFunction }) => {
+const UsersTable: React.FC<UsersTableProps> = ({ users, deleteFunction, editFunction }) => {
     return (
-        <Table className="mx-auto md:w-2/3 sm:w-full">
+        <Table className="mx-auto w-full">
             <TableCaption>A list of users</TableCaption>
             <TableHeader>
                 
@@ -31,14 +32,13 @@ const UsersTable: React.FC<UsersTableProps> = ({ users, deleteFunction }) => {
                     <TableRow key={user.id}>
                         <TableCell>
                             <Link href={`/admin/users-management/${user.id}`}>
-                            <Button variant={"link"}>{user.name}</Button>
-                            
+                            <Button variant={"link"}>{user.name}</Button>   
                             </Link>
                         </TableCell>
                         <TableCell>{user.email}</TableCell>
                         <TableCell>{dayMonthYear(user.created_at)}</TableCell>
                         <TableCell>
-                            <Button variant={"yellow"}>Edit</Button>
+                            <UserEditModal editFunction={editFunction} editUser={user} />
                             <CommonDeleteModal deleteHandler={deleteFunction} deleteItemID={user.id}  />
                         </TableCell>
                     </TableRow>

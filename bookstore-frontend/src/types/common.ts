@@ -4,7 +4,6 @@ export type Book = {
     description: string;
     image?: string;
     isbn: string;
-    quantity: number;
     category?: Category;
     author?: Author;
     created_at: string;
