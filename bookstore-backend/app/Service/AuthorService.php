@@ -39,8 +39,8 @@ class AuthorService
 
     private function saveAuthorImage($imageFile){
         $imageName = time().'.'.$imageFile->extension();
-        $imageFile->move(public_path('images'), $imageName);
-        $imagePath = 'images/' . $imageName;
+        $imageFile->move(public_path('images/authors'), $imageName);
+        $imagePath = 'images/authors/' . $imageName;
         return $imagePath;
     }
 

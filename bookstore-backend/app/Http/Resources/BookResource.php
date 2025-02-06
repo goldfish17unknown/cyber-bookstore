@@ -20,14 +20,15 @@ class BookResource extends JsonResource
             'description' => $this->description,
             'image' => $this->image,
             'isbn' => $this->isbn,
-            'author' => [
-                'author_id' => $this->author_id,
-                'author_name' => $this->author->name
-            ],
-            'category' => [
+            'author' => $this->author ? [
+            'author_id' => $this->author_id,
+            'author_name' => $this->author->name
+            ] : null,
+            'category' => $this->category ? [
                 'category_id' => $this->category_id,
                 'category_name' => $this->category->name
-            ],
+            ] : null,
+            'borrowStatus' => $this->borrowStatus
         ];
     }
 }

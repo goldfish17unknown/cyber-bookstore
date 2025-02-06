@@ -39,14 +39,14 @@ Route::get('authors/{id}/books', [AuthorController::class, 'getBooksByAuthors'])
 
 
 //Book routes
-Route::get('books', [BookController::class, 'index']);
-Route::get('books/{id}', [BookController::class, 'show']);
-Route::post('books', [BookController::class, 'store']);
+
+
+
 Route::get('books/{id}/author', [BookController::class, 'getBookAuthor']);
 //TODO::To add borrowed history
 Route::get('categories/{id}/books', [BookController::class, 'showBooksByCategory']);
 Route::put('books/{id}', [BookController::class, 'update']);
-Route::delete('books/{id}', [BookController::class, 'destroy']);
+
 
 
 
@@ -62,6 +62,12 @@ Route::get('authors', [AuthorController::class, 'index']);
 Route::get('authors/{id}', [AuthorController::class, 'show']);
 
 
+// * books
+Route::post('books', [BookController::class, 'store']);
+Route::get('books', [BookController::class, 'index']);
+Route::get('books/{id}', [BookController::class, 'show']);
+
+Route::delete('books/{id}', [BookController::class, 'destroy']);
 
 
 

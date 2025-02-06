@@ -20,7 +20,7 @@ class UserService
         return $user;
     }
 
-    public function getUser(?string $search = null)
+    public function getUsers(?string $search = null)
     {
     $users = User::where('role', 'user');
 

@@ -13,7 +13,6 @@ const AdminBookManagement: NextPageWithLayout = () => {
     const [books, setBooks] = useState<Book[]>([]);
 
 
-    const fetchBooks 
 
 
     return (

@@ -22,36 +22,40 @@ class BookController extends Controller
     ){}
 
 
-    public function index(){
-        $books = $this->bookService->allBooks();
-        return response()->json(
-            BookResource::collection($books)
-        , 200);
-    }
-
-    public function bookWithPaginate(){
-        $books = $this->bookService->allBooksWithPagination(6);
+    public function index(Request $request){
+        $search = $request->query("search");
+        $books = $this->bookService->getBooks($search);
         return response()->json([
-            'data' => BookWithStatusResource::collection($books),
+            'data' => BookResource::collection($books),
             'current_page' => $books->currentPage(),
             'last_page' => $books->lastPage(),
             'has_more_pages' => $books->hasMorePages(),
         ], 200);
     }
 
-    public function bookWithPaginateHome(){
-        $books = $this->bookService->allBooksWithPagination(12);
-        return response()->json([
-            'data' => BookWithStatusResource::collection($books),
-            'current_page' => $books->currentPage(),
-            'last_page' => $books->lastPage(),
-            'has_more_pages' => $books->hasMorePages(),
-        ], 200);
+    public function store(CreateBookRequest $request){
+        try{
+            DB::beginTransaction();
+            $data = $request->validated();
+            $book = $this->bookService->createBook($data);
+            DB::commit();
+            return response()->json([
+                new BookResource($book)
+            ], 201);
+        } catch (Exception $e){
+            DB::rollBack();
+            Log::error($e->getMessage());
+            Log::info("error in BookConntroller@store");
+            return response()->json([
+                'message' => 'Failed to create book',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     public function show($id){
         try{
-            $book = $this->bookService->getBook($id);
+            $book = $this->bookService->getBookById($id);
             return response()->json([
                 new BookResource($book)
             ], 200);
@@ -64,6 +68,24 @@ class BookController extends Controller
             ], 404);
         }
     }
+
+
+
+
+
+    
+
+    public function bookWithPaginateHome(){
+        $books = $this->bookService->allBooksWithPagination(12);
+        return response()->json([
+            'data' => BookWithStatusResource::collection($books),
+            'current_page' => $books->currentPage(),
+            'last_page' => $books->lastPage(),
+            'has_more_pages' => $books->hasMorePages(),
+        ], 200);
+    }
+
+    
 
 
     // get author of the book
@@ -123,25 +145,7 @@ class BookController extends Controller
     }
 
 
-    public function store(CreateBookRequest $request){
-        try{
-            DB::beginTransaction();
-            $data = $request->validated();
-            $book = $this->bookService->createBook($data);
-            DB::commit();
-            return response()->json([
-                new BookResource($book)
-            ], 201);
-        } catch (Exception $e){
-            DB::rollBack();
-            Log::error($e->getMessage());
-            Log::info("error in BookConntroller@store");
-            return response()->json([
-                'message' => 'Failed to create book',
-                'error' => $e->getMessage()
-            ], 500);
-        }
-    }
+    
 
 
     public function update(CreateBookRequest $request, $id){
@@ -192,4 +196,17 @@ class BookController extends Controller
             ], 500);
         }
     }
+
+
+    public function bookWithPaginate(){
+        $books = $this->bookService->allBooksWithPagination(6);
+        return response()->json([
+            'data' => BookWithStatusResource::collection($books),
+            'current_page' => $books->currentPage(),
+            'last_page' => $books->lastPage(),
+            'has_more_pages' => $books->hasMorePages(),
+        ], 200);
+    }
+
+
 }

@@ -21,7 +21,7 @@ class UserController extends Controller
 
     public function index(Request $request){
         $search = $request->query('search');
-        $users = $this->userService->getUser($search);
+        $users = $this->userService->getUsers($search);
         Log::info($users);
         return response()->json([
             'data' => UserResource::collection($users),
