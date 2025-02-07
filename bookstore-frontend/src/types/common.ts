@@ -38,6 +38,7 @@ export type BorrowedBook = {
     user: User;
     book: Book;
     borrowed_at: string;
+    returned_at?: string;
     due_at: string;
-    status: enum
+    status: string;
 }

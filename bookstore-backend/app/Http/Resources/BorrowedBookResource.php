@@ -28,6 +28,7 @@ class BorrowedBookResource extends JsonResource
             ],
             'borrowed_at' => $this->borrowed_at,
             'due_at' => $this->due_at,
+            'returned_at' => $this->returned_at,
             'status' => $this->status
         ];
     }

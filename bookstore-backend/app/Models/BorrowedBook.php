@@ -28,7 +28,7 @@ class BorrowedBook extends Model
     public function getStatusAttribute(){
         if (is_null($this->returned_at)) {
             // $dueDate = Carbon::parse($this->due_at);
-            $dueDate = Carbon::parse("2025-02-01 04:41:30");
+            $dueDate = Carbon::parse($this->due_at);
             if (Carbon::now()->greaterThan($dueDate)) {
                 $daysExceeded = Carbon::now()->diffInDays($dueDate, true); 
                 $daysExceeded = floor($daysExceeded);

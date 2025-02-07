@@ -69,9 +69,9 @@ class UserController extends Controller
             $user = $this->userService->getUserById($id);
             $record = $this->userService->getUserBorrowHistory($user);
             Log::info($record);
-            return response()->json([
+            return response()->json(
                 BorrowedBookResource::collection($record)
-            ], 200);
+            , 200);
         } catch (ModelNotFoundException $e) {
             return response()->json([
                 'message' => 'User not found'
