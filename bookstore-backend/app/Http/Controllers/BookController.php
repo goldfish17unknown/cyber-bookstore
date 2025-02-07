@@ -24,7 +24,9 @@ class BookController extends Controller
 
     public function index(Request $request){
         $search = $request->query("search");
-        $books = $this->bookService->getBooks($search);
+        $category = $request->query("category");
+        $author = $request->query("author");
+        $books = $this->bookService->getBooks($search, $category, $author);
         return response()->json([
             'data' => BookResource::collection($books),
             'current_page' => $books->currentPage(),

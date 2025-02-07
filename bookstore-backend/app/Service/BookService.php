@@ -14,10 +14,16 @@ class BookService
      */
     public function __construct(){}
 
-    public function getBooks(?string $search = null){
+    public function getBooks($search = null, $category = null, $author = null){
         $query = Book::query(); 
         if (!empty($search)) {
             $query->where('title', 'LIKE', "%{$search}%");
+        }
+        if (!empty($category)){
+            $query->where('category_id', $category);
+        }
+        if(!empty($author)){
+            $query->where('author_id', $author);
         }
         return $query->latest()->paginate(6);
     }

@@ -3,36 +3,48 @@ import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, Tabl
 import { Book } from "@/types/common";
 import { Link } from "lucide-react";
 
+
 interface BooksTableProps {
     books: Book[];
 }
 
 const BooksTable: React.FC<BooksTableProps> = ({ books }) =>{
     return(
-        <Table className="mx-auto md:w-2/3 sm:w-full">
+        <Table className="mx-auto w-full">
         <TableCaption>A list of books</TableCaption>
         <TableHeader>
             <TableRow>
+                <TableHead className="w-1/6 text-center">Image</TableHead>
                 <TableHead className="w-1/6">Title</TableHead>
-                <TableHead className="w-2/6">Description</TableHead>
+                <TableHead className="w-1/6">Author</TableHead>
+                <TableHead className="w-1/6">Category</TableHead>
+                <TableHead className="w-1/6">Available</TableHead>
+                <TableHead className="w-2/6">Action</TableHead>
             </TableRow>
         </TableHeader>
 
         <TableBody>
             {books.map((book) => (
                 <TableRow key={book.id}>
-                    <TableCell>
-                    <img src={book.image ? `http://localhost:8000/${book.image}` : "/placeholders/book-placeholder.png"}
-                            alt="book" className="w-12 h-12 rounded-full" />
+                    <TableCell className="flex justify-center">
+                        <div className="relative w-16 h-24 overflow-hidden">
+                            <img src={book.image ? `http://localhost:8000/${book.image}` : "/placeholders/user-placeholder.png"}
+                            className="w-full h-full" alt="" />
+                        </div>
                     </TableCell>
-                    <TableCell>{book.name}</TableCell>
-                    <TableCell>   
-                        <Button variant={"green"} size={"sm"} asChild>
-                            <Link href={`/admin/books/${book.id}`}>
-                                View
-                            </Link>
-                        </Button>
-                            </TableCell>
+                    <TableCell>
+                        {book.title}
+                    </TableCell>
+                    <TableCell>
+                        {book.author ? book.author.name : "Unknown Author"}
+                    </TableCell>
+                    <TableCell>
+                        {book.category ? book.category.name :"-"}
+                    </TableCell>
+                    <TableCell>{book.borrowStatus}</TableCell>
+                    <TableCell>
+                        <Button variant={"yellow"}>borrow</Button>
+                    </TableCell>
                 </TableRow>
             ))}
         </TableBody>
@@ -41,3 +53,5 @@ const BooksTable: React.FC<BooksTableProps> = ({ books }) =>{
 }
 
 export default BooksTable;
+
+// book image, book name, author name, category, available,  action (borrow)

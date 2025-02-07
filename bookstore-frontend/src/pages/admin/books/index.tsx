@@ -8,12 +8,27 @@ import { SmilePlus } from "lucide-react";
 import { ReactElement, useEffect, useState } from "react";
 
 
-
 const AdminBookManagement: NextPageWithLayout = () => { 
     const [books, setBooks] = useState<Book[]>([]);
 
+    useEffect(() => {
+        fetchUsers();
+    }, [])
 
-
+    const fetchUsers = async () => {
+        try{
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/books`);
+            if (!response.ok){
+                throw new Error("Failed to fetch datas.")
+            }
+            const data =  await response.json();
+            const books = data.data
+            console.log(books)
+            setBooks(data.data)
+        } catch(error){
+            console.log(error instanceof Error ? error.message : "Unknown error")
+        } 
+    } 
 
     return (
         <div className="w-full mt-10">

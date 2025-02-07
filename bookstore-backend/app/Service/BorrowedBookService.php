@@ -2,7 +2,9 @@
 
 namespace App\Service;
 
+use App\Models\Book;
 use App\Models\BorrowedBook;
+use Illuminate\Support\Facades\Log;
 
 class BorrowedBookService
 {
@@ -38,5 +40,19 @@ class BorrowedBookService
         $record = BorrowedBook::findOrFail($id);
         $record->delete();
         return $record;
+    }
+
+    public function isBookAvailable($id){
+        $book =  Book::find($id);
+        if (!$book){
+            return false;  // this is just test
+        }
+        $status = $book->borrowStatus;
+        Log::info($status);
+        if($status == "Available"){
+            return true;
+        } else {
+            return false;
+        }
     }
 }

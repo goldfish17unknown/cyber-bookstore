@@ -15,15 +15,19 @@ class BorrowedBookResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'user' => [
-                'user_id' => $this->user_id,
-                'user_name' => $this->user->name
+                'id' => $this->user_id,
+                'name' => $this->user->name,
+                'email' => $this->user->email
             ],
             'book' => [
-                'book_id' => $this->book_id,
-                'book_name' => $this->book->name
+                'id' => $this->book_id,
+                'title' => $this->book->title,
+                'image' => $this->book->image
             ],
-            'borrow_at' => $this->borrow_at,
+            'borrowed_at' => $this->borrowed_at,
+            'due_at' => $this->due_at,
             'status' => $this->status
         ];
     }

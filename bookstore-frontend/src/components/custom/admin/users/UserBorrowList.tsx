@@ -17,7 +17,7 @@ const UserBorrowList: React.FC<UserBorrowListProps> = ({ userId }) => {
                         <p>12/12/2002</p>
                     </div>
                     <div className="flex justify-center col-span-2 items-center h-full">
-                        <img src="/placeholders/book-placeholder.png" alt="" className="h-24" />
+                        <img src="/placeholders/book-placeholder.png" alt="" className="h-24 w-18" />
                     </div>
                     <div className="col-span-2">
                         <p>book name</p>

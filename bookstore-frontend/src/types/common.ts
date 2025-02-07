@@ -8,6 +8,7 @@ export type Book = {
     author?: Author;
     created_at: string;
     updated_at: string;
+    borrowStatus: string;
 }
 
 export type Category = {

@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
 use App\Http\Controllers\AuthorController;
+use App\Http\Controllers\BorrowedBookController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\UserController;
 use App\Service\BookService;
@@ -79,3 +80,8 @@ Route::put('users/{id}', [UserController::class, 'update']);
 Route::get('users/{id}', [UserController::class, 'show']);
 Route::get('users/borrowhistory/{id}', [UserController::class, 'userBorrowHistory']);
 
+//* borrow books
+Route::get('borrow', [BorrowedBookController::class, 'borrowedList']);
+Route::post('borrow', [BorrowedBookController::class, 'store']);
+Route::delete('borrow/{id}', [BorrowedBookController::class, 'deleteRecord']);
+Route::put('borrow/return/{id}', [BorrowedBookController::class, 'returnBook']);

@@ -33,19 +33,12 @@ class Book extends Model
 
     public function getBorrowStatusAttribute(){
         $latestBorrowedBook = $this->borrowedBook()->latest()->first();
-
         if (!$latestBorrowedBook) {
             return 'Available';
         }
-
         if (!$latestBorrowedBook->returned_at) {
             return 'Unavailable';
         }
-
-        if (Carbon::parse($latestBorrowedBook->due_date)->isPast()) {
-            return 'Exceeded due date';
-        }
-
         return 'Available';
     }
 }

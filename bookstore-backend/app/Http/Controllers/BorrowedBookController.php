@@ -18,8 +18,13 @@ class BorrowedBookController extends Controller
 
     public function store(BorrowedBookRequest $request){
         try{
+
             DB::beginTransaction();
-            $data = $request->validate();
+            $data = $request->validated();
+            $isAvailable = $this->borrowedBookService->isBookAvailable($data['book_id']);
+            if(!$isAvailable){
+                throw new \Exception("The book is not available for borrowing.");
+            }
             $record = $this->borrowedBookService->createBorrowRecord($data);
             DB::commit();
             return response()->json(
@@ -28,9 +33,9 @@ class BorrowedBookController extends Controller
         } catch (Exception $e){
             DB::rollBack();
             Log::error($e->getMessage());
-            Log::info("error in BookConntroller@update");
+            Log::info("error in BorrowedBookControlle@store");
             return response()->json([
-                'message' => 'Failed to update book',
+                'message' => 'Failed to make record',
                 'error' => $e->getMessage()
             ], 500);
         }
@@ -75,7 +80,7 @@ class BorrowedBookController extends Controller
             $record = $this->borrowedBookService->deleteBorrowRecord($id);
             DB::commit();
             return response()->json([
-                "message"=> "book deleted successfully"
+                "message"=> "record deleted successfully"
             ], 200);
 
         } catch (ModelNotFoundException $e) {
