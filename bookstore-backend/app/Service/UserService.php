@@ -46,7 +46,7 @@ class UserService
     }
 
     public function getUserBorrowHistory($user){
-        return $user->BorrowedBooks()->get();
+        return $user->BorrowedBooks()->latest()->get();
     }
 
     public function editUser($id, $data){
