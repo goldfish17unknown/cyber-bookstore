@@ -4,10 +4,16 @@ interface UserBorrowListProps {
 }
 
 const UserBorrowList: React.FC<UserBorrowListProps> = ({ userId }) => {
+    const [borrowList, setBorrowList] = useState<>([])
+
+    const fetchBorrowList = () => {
+
+    }
     return (
         <div className="w-full p-5">
             <h1 className="font-seminbold text-xl">Book borrowed history:</h1>
             <div className="w-full p-5 mt-2">
+
 
 
 

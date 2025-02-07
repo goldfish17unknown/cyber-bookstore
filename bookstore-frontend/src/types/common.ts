@@ -32,3 +32,12 @@ export type User = {
     created_at?: string;
     updated_at?: string;
 }
+
+export type BorrowedBook = {
+    id: number;
+    user: User;
+    book: Book;
+    borrowed_at: string;
+    due_at: string;
+    status: enum
+}

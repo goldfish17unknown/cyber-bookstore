@@ -26,10 +26,15 @@ class BorrowedBook extends Model
     }
 
     public function getStatusAttribute(){
-        if(is_null($this->returned_at)){
-            return Carbon::now()->greaterThan(Carbon::parse($this->due_at))
-            ? "exceeded due date"
-            : "Not returned";
+        if (is_null($this->returned_at)) {
+            // $dueDate = Carbon::parse($this->due_at);
+            $dueDate = Carbon::parse("2025-02-01 04:41:30");
+            if (Carbon::now()->greaterThan($dueDate)) {
+                $daysExceeded = Carbon::now()->diffInDays($dueDate, true); 
+                $daysExceeded = floor($daysExceeded);
+                return "{$daysExceeded} day(s) exceeded";
+            }
+            return "Not returned";
         }
         return "returned";
     }
