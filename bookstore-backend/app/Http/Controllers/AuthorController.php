@@ -19,12 +19,17 @@ class AuthorController extends Controller
     ){}
 
 
+    // uses in admin panel, book create dropdown
     public function index(){
         $authors = $this->authorService->allAuthors();
         return response()->json(
             AuthorResource::collection($authors)
         , 200);
     }
+
+
+
+
 
     public function show($id){
         try{

@@ -24,7 +24,7 @@ Route::post('user/login',[AuthController::class, 'login']);
 Route::post('user/getuser',[AuthController::class, 'getCurrentUser'])->middleware('auth:api');
 
 
-Route::get('categories', [CategoryController::class, 'index']);
+
 Route::post('categories', [CategoryController::class, 'store']);
 Route::put('categories/{id}', [CategoryController::class, 'update']);
 Route::delete('categories/{id}', [CategoryController::class, 'destroy']);
@@ -52,20 +52,36 @@ Route::put('books/{id}', [BookController::class, 'update']);
 
 
 Route::get('books/withStatus', [BookController::class, 'bookWithPaginateHome']);
-
-// For admin
-// * books
-Route::get('books/admin/withStatus', [BookController::class, 'bookWithPaginate']);
+Route::get('books/admin/withStatus', [BookController::class, 'bookWithPaginate']); 
 
 
-// * authors
-Route::get('authors', [AuthorController::class, 'index']);
-Route::get('authors/{id}', [AuthorController::class, 'show']);
 
 
-// * books
+
+// *********
+// * For admin
+// *********
+
+// * books management
+Route::get('books', [BookController::class, 'index']);  //pagination 6
 Route::post('books', [BookController::class, 'store']);
-Route::get('books', [BookController::class, 'index']);
+
+
+// * authors management
+Route::get('authors', [AuthorController::class, 'index']); // also uses in admin panel, book create dropdown
+
+
+
+// * categories management
+Route::get('categories', [CategoryController::class, 'index']);  // also uses in admin panel, book create dropdown
+
+
+
+
+
+// * books
+
+Route::get('authors/{id}', [AuthorController::class, 'show']);
 Route::get('books/{id}', [BookController::class, 'show']);
 
 Route::delete('books/{id}', [BookController::class, 'destroy']);

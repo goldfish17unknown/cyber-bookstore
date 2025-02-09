@@ -50,7 +50,7 @@ const AdminAuthorCreate: NextPageWithLayout = () => {
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files.length > 0) {
-            setImage(e.target.files[0]); // Set the selected file
+            setImage(e.target.files[0]); 
         }
     
             console.log(image);
