@@ -21,11 +21,6 @@ Route::post('user/register',[AuthController::class, 'register']);
 
 
 
-
-Route::post('user/getuser',[AuthController::class, 'getCurrentUser'])->middleware('auth:api');
-
-
-
 Route::post('categories', [CategoryController::class, 'store']);
 Route::put('categories/{id}', [CategoryController::class, 'update']);
 Route::delete('categories/{id}', [CategoryController::class, 'destroy']);
@@ -62,10 +57,11 @@ Route::get('books/admin/withStatus', [BookController::class, 'bookWithPaginate']
 // *********
 // * For admin
 // *********
-
+// Route::get('login')
 Route::post('admin/login',[AuthController::class, 'login']);
-
 Route::middleware([AdminMiddleware::class])->group(function() {
+    Route::post('admin/logout', [AuthController::class, 'logout']);
+    Route::post('admin/info',[AuthController::class, 'getCurrentUser']);
     // * books management
     Route::get('books', [BookController::class, 'index']);  //pagination 6
     Route::post('books', [BookController::class, 'store']);

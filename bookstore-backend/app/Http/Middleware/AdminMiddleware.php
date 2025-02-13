@@ -22,6 +22,8 @@ class AdminMiddleware
 
             return response()->json(['error' => 'Unauthorized'], 401);
         }
+        Auth::setUser(Auth::guard('api')->user());
+        
         return $next($request);
     }
 }
