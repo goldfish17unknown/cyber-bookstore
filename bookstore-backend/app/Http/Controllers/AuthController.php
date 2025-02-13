@@ -12,35 +12,34 @@ use App\Http\Requests\RegisterRequest;
 
 class AuthController extends Controller
 {
-
-
-    public function register(RegisterRequest $request){
-        try{
-            DB::beginTransaction();
-            $data =  $request->validated();
-            $user = User::create([
-                'name' => $data["name"],
-                'email' => $data["email"],
-                'password' => Hash::make($data["password"]),
-                'role' => 'admin'
-            ]);
-            $token = $user->createToken('authToken')->accessToken;
-            DB::commit();
-            return response() ->json([
-                'user' => $user,
-                "access_token" => $token
-            ], 201);
-        } catch(Exception $e){
-            DB::rollBack();
-            return response()->json([
-                'message' => 'Registration failed',
-                'error' => $e->getMessage()
-            ], 400);
-        } 
-    }
+    // public function register(RegisterRequest $request){
+    //     try{
+    //         DB::beginTransaction();
+    //         $data =  $request->validated();
+    //         $user = User::create([
+    //             'name' => $data["name"],
+    //             'email' => $data["email"],
+    //             'password' => Hash::make($data["password"]),
+    //             'role' => 'admin'
+    //         ]);
+    //         $token = $user->createToken('authToken')->accessToken;
+    //         DB::commit();
+    //         return response() ->json([
+    //             'user' => $user,
+    //             "access_token" => $token
+    //         ], 201);
+    //     } catch(Exception $e){
+    //         DB::rollBack();
+    //         return response()->json([
+    //             'message' => 'Registration failed',
+    //             'error' => $e->getMessage()
+    //         ], 400);
+    //     } 
+    // }
 
 
     public function login(Request $register){
+        
         $data = $register->validate([
             'email' => 'required|email',
             'password' => 'required|string'
@@ -50,7 +49,14 @@ class AuthController extends Controller
                 'message' => 'Invalid credentials'
             ], 401);
         }
-        $token = Auth::user()->createToken('authToken')->accessToken; 
+        $user = Auth::user();
+        if($user->role !== 'admin'){
+            Auth::logout();
+            return response()->json([
+                'message' => 'Not allowed'
+            ], 403);
+        }
+        $token = $user->createToken('authToken')->accessToken; 
         return response()->json([
             'user' => Auth::user(),
             'access_token' => $token

@@ -1,14 +1,15 @@
 <?php
 
+use App\Service\BookService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookController;
-use App\Http\Controllers\AuthorController;
-use App\Http\Controllers\BorrowedBookController;
-use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\UserController;
-use App\Service\BookService;
+use App\Http\Middleware\AdminMiddleware;
+use App\Http\Controllers\AuthorController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\BorrowedBookController;
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
@@ -20,7 +21,7 @@ Route::post('user/register',[AuthController::class, 'register']);
 
 
 
-Route::post('user/login',[AuthController::class, 'login']);
+
 Route::post('user/getuser',[AuthController::class, 'getCurrentUser'])->middleware('auth:api');
 
 
@@ -62,9 +63,21 @@ Route::get('books/admin/withStatus', [BookController::class, 'bookWithPaginate']
 // * For admin
 // *********
 
-// * books management
-Route::get('books', [BookController::class, 'index']);  //pagination 6
-Route::post('books', [BookController::class, 'store']);
+Route::post('admin/login',[AuthController::class, 'login']);
+
+Route::middleware([AdminMiddleware::class])->group(function() {
+    // * books management
+    Route::get('books', [BookController::class, 'index']);  //pagination 6
+    Route::post('books', [BookController::class, 'store']);
+    
+    Route::delete('books/{id}', [BookController::class, 'destroy']);
+
+});
+
+
+
+Route::get('authors/{id}', [AuthorController::class, 'show']);
+    Route::get('books/{id}', [BookController::class, 'show']);
 
 
 // * authors management
@@ -81,10 +94,7 @@ Route::get('categories', [CategoryController::class, 'index']);  // also uses in
 
 // * books
 
-Route::get('authors/{id}', [AuthorController::class, 'show']);
-Route::get('books/{id}', [BookController::class, 'show']);
 
-Route::delete('books/{id}', [BookController::class, 'destroy']);
 
 
 
