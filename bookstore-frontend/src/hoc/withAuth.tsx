@@ -9,13 +9,13 @@ const withAuth = (WrappedComponent: React.FC) => {
         const [ authCheck, setAuthCheck ] = useState<boolean>(false);
 
         useEffect(() => {
-            if (isAuthenticated()) {
+            if (isAuthenticated) {
                 router.replace("/admin/login");
             }
             setAuthCheck(true); 
         }, [isAuthenticated]);
 
-        if(authCheck && isAuthenticated()) return <WrappedComponent {...props} />;
+        if(authCheck && isAuthenticated) return <WrappedComponent {...props} />;
 
         return null; //to prevent rendering
 

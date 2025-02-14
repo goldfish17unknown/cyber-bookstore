@@ -4,16 +4,15 @@ import { create } from 'zustand';
 interface AuthState {
     user: User | null;
     accessToken: string | null;
-    isAuthenticated: () => boolean;
+    isAuthenticated: boolean;
     login: (email: string, password: string) => Promise<void>;
     logout: () => Promise<void>;
 }
 
-
 const useAuthStore = create<AuthState>((set) => ({
-    user: null,
-    accessToken: null,
-    isAuthenticated: () => !!localStorage.getItem('access_token'),
+    user: typeof window !== 'undefined' ? JSON.parse(localStorage.getItem('user') || 'null') : null,
+    accessToken: typeof window !== 'undefined' ? localStorage.getItem('access_token') : null,
+    isAuthenticated: !!(typeof window !== 'undefined' && localStorage.getItem('access_token')),
     login: async (email, password) => {
         try{
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/admin/login`, {

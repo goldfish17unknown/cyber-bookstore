@@ -71,6 +71,56 @@ class BookController extends Controller
         }
     }
 
+    public function update(CreateBookRequest $request, $id){
+        try{
+            DB::beginTransaction();
+            $data = $request->validated();
+            $book = $this->bookService->updateBook($id, $data);
+            DB::commit();
+            return response()->json([
+                new BookResource($book)
+            ], 200);
+        } catch (ModelNotFoundException $e) {
+            return response()->json([
+                'message' => 'Book not found'
+            ], 404);
+        } catch (Exception $e){
+            DB::rollBack();
+            Log::error($e->getMessage());
+            Log::info("error in BookConntroller@update");
+            return response()->json([
+                'message' => 'Failed to update book',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+    
+    public function destroy($id){
+        try{
+            DB::beginTransaction();
+            $book = $this->bookService->deleteBook($id);
+            DB::commit();
+            return response()->json([
+                "message"=> "book deleted successfully"
+            ], 200);
+        } catch (ModelNotFoundException $e) {
+            DB::rollBack();
+            return response()->json([
+                'message' => 'Book not found'
+            ], 404);
+        } catch (Exception $e){
+            DB::rollBack();
+            Log::error($e->getMessage());
+            Log::info('Error in BookController@destroy');
+            return response()->json([
+                'message' => 'Failed to delete Book',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
+
 
 
 
@@ -150,55 +200,7 @@ class BookController extends Controller
     
 
 
-    public function update(CreateBookRequest $request, $id){
-        try{
-            DB::beginTransaction();
-            $data = $request->validated();
-            $book = $this->bookService->updateBook($id, $data);
-            DB::commit();
-            return response()->json([
-                new BookResource($book)
-            ], 200);
-        } catch (ModelNotFoundException $e) {
-            return response()->json([
-                'message' => 'Book not found'
-            ], 404);
-        } catch (Exception $e){
-            DB::rollBack();
-            Log::error($e->getMessage());
-            Log::info("error in BookConntroller@update");
-            return response()->json([
-                'message' => 'Failed to update book',
-                'error' => $e->getMessage()
-            ], 500);
-        }
-    }
-
     
-    public function destroy($id){
-        try{
-            DB::beginTransaction();
-            $book = $this->bookService->deleteBook($id);
-            DB::commit();
-            return response()->json([
-                "message"=> "book deleted successfully"
-            ], 200);
-        } catch (ModelNotFoundException $e) {
-            DB::rollBack();
-            return response()->json([
-                'message' => 'Book not found'
-            ], 404);
-        } catch (Exception $e){
-            DB::rollBack();
-            Log::error($e->getMessage());
-            Log::info('Error in BookController@destroy');
-            return response()->json([
-                'message' => 'Failed to delete Book',
-                'error' => $e->getMessage()
-            ], 500);
-        }
-    }
-
 
     public function bookWithPaginate(){
         $books = $this->bookService->allBooksWithPagination(6);
