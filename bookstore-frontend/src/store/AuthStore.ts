@@ -33,7 +33,6 @@ const useAuthStore = create<AuthState>((set) => ({
             localStorage.setItem('access_token', data.access_token);
             localStorage.setItem('user', JSON.stringify(data.user));
         } catch (error) {
-            console.error('Login failed:', error);
             throw error;
         }
     },

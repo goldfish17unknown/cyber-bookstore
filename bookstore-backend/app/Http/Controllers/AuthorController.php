@@ -27,10 +27,6 @@ class AuthorController extends Controller
         , 200);
     }
 
-
-
-
-
     public function show($id){
         try{
             $author = $this->authorService->getAuthor($id);
