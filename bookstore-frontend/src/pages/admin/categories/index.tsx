@@ -5,9 +5,15 @@ import { AdminLayout } from "@/components/layouts/AdminLayout"
 import { NextPageWithLayout } from "@/pages/_app"
 import { Category } from "@/types/common"
 import { ReactElement, useEffect, useState } from "react"
+import useCategoryStore from "@/store/CategoryStore"
 
 
 const AdminCategoriesManagement: NextPageWithLayout = () => {
+    const icategories = useCategoryStore((state) => state.icategories);
+    const fetchCategories = useCategoryStore((state) => state.fetchCategories)
+    const deleteCategory = useCategoryStore((state) => state.deleteCategory);
+    const createCategory = useCategoryStore((state) => state.createCategory)
+
     const [categories, setCategories] = useState<Category[]>([]);
     const [search, setSearch] = useState<string>("");
 
@@ -15,57 +21,24 @@ const AdminCategoriesManagement: NextPageWithLayout = () => {
     const [createDialogOpen, setCreateDialogOpen] = useState<boolean>(false)
 
     useEffect(() => {
-        fetchCategoryData()
+        fetchCategories()
     }, [])
 
-    const fetchCategoryData = async () => {
-        try{
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories`);
-            if(!response.ok){
-                throw new Error("Failed to fetch datas.")
-            }
-            const data = await response.json()
-            setCategories(data)
-        } catch (error){
-            console.log(error instanceof Error ? error.message : "Unknown error")
-        }
-    }
+
 
 
     const handleCreate = async(e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        try{
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ name: newCatName }),
-            })
-            if(!response.ok){
-                throw new Error("Failed to create category");
-            }
-            const data = await response.json();
-            setCreateDialogOpen(false)
-            setNewCatName("");
-            fetchCategoryData();
-        } catch (error){
-            console.log(error);
-        }
+        await createCategory(newCatName)
+        setCreateDialogOpen(false)
+        setNewCatName("");
+        fetchCategories();
     }
 
 
     const handleDelete = async(id: number) => {
-        try{
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories/${id}`, {
-                method: "DELETE"
-            })
-            if(!response.ok){
-                throw new Error("Error in fetching data")
-            }
-            fetchCategoryData();
-        } catch (error){
-        }
+        await deleteCategory(id);
+        fetchCategories();
     }
 
 
@@ -91,7 +64,7 @@ const AdminCategoriesManagement: NextPageWithLayout = () => {
                   dialogOpen={createDialogOpen} setDialogOpen={setCreateDialogOpen} />
                 </div>
             </div>
-            <CategoriesTable categories={categories} deleteFunction={handleDelete}/>
+            <CategoriesTable categories={icategories} deleteFunction={handleDelete}/>
             
         </div>
     )

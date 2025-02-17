@@ -12,6 +12,7 @@ interface AuthorState {
     addAuthor: (name: string, bio: string, image?: File | null) => Promise<void>;
     updateAuthor: (id: number, name: string, bio: string, image?: File | null) => Promise<void>;
     deleteAuthor: (id: number) => Promise<void>;
+    loadAuthors: (search?: string) => Promise<void>;
 }
 
 const useAuthorStore = create<AuthorState>((set) => ({
@@ -59,7 +60,6 @@ const useAuthorStore = create<AuthorState>((set) => ({
         } catch (error){
             throw error;
         }
-
     },
     addAuthor: async (name, bio, image) => {
         try{
@@ -105,9 +105,7 @@ const useAuthorStore = create<AuthorState>((set) => ({
             if (!response.ok) throw new Error("Failed to update author");
         } catch (error){
             throw error;
-
         }
-
     },
     deleteAuthor: async(id) => {
         try{
@@ -123,6 +121,9 @@ const useAuthorStore = create<AuthorState>((set) => ({
         } catch(error){
             throw error;
         }
+    },
+    loadAuthors: async(search="") => {
+
     }
 }));
 

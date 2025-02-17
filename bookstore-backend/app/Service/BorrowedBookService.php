@@ -14,7 +14,7 @@ class BorrowedBookService
     public function __construct(){}
 
     public function getBorrowRecord(){
-        $record = BorrowedBook::whereNull('returned_at')->latest()->get();
+        $record = BorrowedBook::whereNull('returned_at')->latest()->paginate(10);
         return $record;
     }
 
