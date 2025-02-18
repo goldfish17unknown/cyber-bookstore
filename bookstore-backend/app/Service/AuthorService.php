@@ -67,4 +67,15 @@ class AuthorService
         $books = $author->books;
         return $books;
     }
+
+    public function paginateAuthors($search, $itemsPerPage){
+        $query = Author::query();
+        if (!empty($search)) {
+            $query->where('name', 'LIKE', "%{$search}%");
+        }
+        if(empty($itemsPerPage)){
+            $itemsPerPage = 8;
+        }
+        return $query->latest()->paginate($itemsPerPage);
+    }
 }

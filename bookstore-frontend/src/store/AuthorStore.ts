@@ -4,22 +4,39 @@ import useAuthStore from './AuthStore';
 
 interface AuthorState {
     authors: Author[];
-    currentAuthor: Author | null;
     currentPage: number;
+    setCurrentPage: (page: number) => void;
+    nextPage: () => void;
+    backPage: () => void;
     lastPage: number;
+    hasMorePages: boolean;
     fetchAuthors: (search?: string) => Promise<void>;
-    fetchSingleAuthor: (id: number) => Promise<void>;
+    fetchSingleAuthor: (id: string) => Promise<Author>;
     addAuthor: (name: string, bio: string, image?: File | null) => Promise<void>;
     updateAuthor: (id: number, name: string, bio: string, image?: File | null) => Promise<void>;
     deleteAuthor: (id: number) => Promise<void>;
-    loadAuthors: (search?: string) => Promise<void>;
+    PickAuthor: (search?: string) => Promise<void>;
+    limitFetchAuthors: (itemsPerPage: number, search: string) => Promise<Author[]>
 }
 
-const useAuthorStore = create<AuthorState>((set) => ({
-    authors: [],
-    currentAuthor: null,
+const useAuthorStore = create<AuthorState>((set, get) => ({
+    authors: [], 
     currentPage: 1,
+    setCurrentPage: (page: number) => set(state => ({ currentPage: page })),
+    nextPage: () => {
+        const { currentPage, lastPage } = get();
+        if (currentPage < lastPage) {
+          set({ currentPage: currentPage + 1 });
+        }
+      },
+    backPage: () => {
+        const {currentPage} = get();
+        if( currentPage > 1){
+            set({ currentPage: currentPage - 1});
+        }
+    },
     lastPage: 1,
+    hasMorePages: false,
     fetchAuthors: async (search="") => {
         try {
             const token = useAuthStore.getState().accessToken;
@@ -56,7 +73,7 @@ const useAuthorStore = create<AuthorState>((set) => ({
             });
             if (!response.ok) throw new Error("Failed to fetch author");
             const data = await response.json();
-            set({ currentAuthor: data });
+            return data;
         } catch (error){
             throw error;
         }
@@ -122,9 +139,31 @@ const useAuthorStore = create<AuthorState>((set) => ({
             throw error;
         }
     },
-    loadAuthors: async(search="") => {
+    PickAuthor: async(search="") => {
+
+    },
+    limitFetchAuthors: async(itemsPerPage=8, search="") => {
+        try{
+            const { currentPage } = get()
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/authors/front/limit?&search=${search}&page=${currentPage}`);
+            if (!response.ok){
+                throw new Error("Error in fetching datas");
+            }
+            const data = await response.json();
+
+            set({ 
+                currentPage: data.current_page,
+                lastPage: data.last_page,
+                hasMorePages: data.has_more_pages
+            })
+            return data.data
+
+        } catch(error){
+            throw error;
+        }
+        
 
     }
 }));
 
-export default useAuthorStore;
+export default useAuthorStore;//?itemsPerPage=${itemsPerPage}&search=${search}&page=${page}

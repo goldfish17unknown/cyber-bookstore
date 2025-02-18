@@ -9,7 +9,7 @@ import useCategoryStore from "@/store/CategoryStore"
 
 
 const AdminCategoriesManagement: NextPageWithLayout = () => {
-    const icategories = useCategoryStore((state) => state.icategories);
+    const categories = useCategoryStore((state) => state.categories);
     const fetchCategories = useCategoryStore((state) => state.fetchCategories)
     const deleteCategory = useCategoryStore((state) => state.deleteCategory);
     const createCategory = useCategoryStore((state) => state.createCategory)

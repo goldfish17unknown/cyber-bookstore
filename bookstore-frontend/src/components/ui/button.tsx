@@ -22,6 +22,7 @@ const buttonVariants = cva(
         green: "bg-green-500 text-white shadow-sm hover:bg-green-600",
         yellow: "bg-yellow-500 text-white shadow-sm hover:bg-yellow-600",
         red: "bg-red-500 text-white shadow-sm hover:bg-red-600",
+        blackLink: "text-black hover:underline"
       },
       size: {
         default: "h-9 px-4 py-2",

@@ -115,4 +115,16 @@ class AuthorController extends Controller
             ], 404);
         }
     }
+
+    public function getAuthorSlideShow(Request $request){
+        $search = $request->query("search");
+        $itemsPerPage = $request->query("itemsPerPage");
+        $data = $this->authorService->paginateAuthors($search, $itemsPerPage);
+        return response()->json([
+            'data' => AuthorResource::collection($data),
+            'current_page' => $data->currentPage(),
+            'last_page' => $data->lastPage(),
+            'has_more_pages' => $data->hasMorePages(),
+        ], 200);
+    }
 }

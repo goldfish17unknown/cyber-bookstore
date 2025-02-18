@@ -16,6 +16,31 @@ use App\Http\Controllers\BorrowedBookController;
 // })->middleware('auth:api');
 
 
+// ------------ front user view
+
+Route::get('authors/front/limit', [AuthorController::class, 'getAuthorSlideShow']);
+
+
+
+
+
+
+
+//------------------------------
+
+
+// -----------  Admin view
+Route::middleware([AdminMiddleware::class])->group(function() {
+
+});
+//* Authors tab
+Route::get('authors', [AuthorController::class, 'index']);
+Route::post('authors', [AuthorController::class, 'store']);
+
+
+//-----------------------
+
+
 
 Route::post('user/register',[AuthController::class, 'register']);
 
@@ -29,7 +54,7 @@ Route::delete('categories/{id}', [CategoryController::class, 'destroy']);
 // Author routes
 
 
-Route::post('authors', [AuthorController::class, 'store']);
+
 Route::put('authors/{id}', [AuthorController::class, 'update']);
 Route::delete('authors/{id}', [AuthorController::class, 'destroy']);
 Route::get('authors/{id}/books', [AuthorController::class, 'getBooksByAuthors']);
@@ -77,7 +102,7 @@ Route::get('authors/{id}', [AuthorController::class, 'show']);
 
 
 // * authors management
-Route::get('authors', [AuthorController::class, 'index']); // also uses in admin panel, book create dropdown
+
 
 
 
@@ -107,3 +132,22 @@ Route::get('borrow', [BorrowedBookController::class, 'borrowedList']);
 Route::post('borrow', [BorrowedBookController::class, 'store']);
 Route::delete('borrow/{id}', [BorrowedBookController::class, 'deleteRecord']);
 Route::put('borrow/return/{id}', [BorrowedBookController::class, 'returnBook']);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
