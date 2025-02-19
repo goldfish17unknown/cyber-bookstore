@@ -3,8 +3,10 @@ import { create } from 'zustand';
 
 interface BookState {
     books: Book[];
+    setBooks: (book: Book[]) => void;
     currentBook: Book | null;
     currentPage: number;
+    setCurrentPage: (page: number) => void;
     lastPage: number;
     hasMorePages: boolean;
     fetchBooks: (search?: string, category?: string, author?: string) => Promise<void>;
@@ -12,12 +14,15 @@ interface BookState {
     addBook: (title: string, description: string, isbn: string, author_id: number, category_id: number, image?: File | null) => Promise<void>;
     updateBook: (id: number, title: string, description: string, isbn: string, author_id: number, category_id: number, image?: File | null) => Promise<void>;
     deleteBook: (id: number) => Promise<void>;
+    loadBooks: (search: string, category: string, author: string, itemsPerPage?: number) => Promise<Book[]>
 }
 
 const useBookStore = create<BookState>((set, get) => ({
     books: [],
+    setBooks: (book: Book[]) => set(state => ({ books: book })),
     currentBook: null,
     currentPage: 1,
+    setCurrentPage: (page: number) => set(state => ({ currentPage: page })),
     lastPage: 1,
     hasMorePages: false,
     fetchBooks: async(search="", category="", author="") => {
@@ -102,12 +107,26 @@ const useBookStore = create<BookState>((set, get) => ({
             throw error;
         }
     },
-    loadBooks: () => {
+    loadBooks: async(search="", category="", author="", itemsPerPage) => {
+        try{
+            const currentPage = get().currentPage;
+            const response = await fetch(
+                `${process.env.NEXT_PUBLIC_API_URL}/books/front/limit?search=${search}&category=${category}&author=${author}&page=${currentPage}&itemsPerPage=${itemsPerPage}`
+            )
+            const data = await response.json();
+
+            set({
+                currentPage: data.current_page,
+                lastPage: data.last_page,
+                hasMorePages: data.has_more_pages
+            })
+            return data.data;
+        } catch (error){
+            throw error;
+        }
 
     },
-    LazyBooks: () => {
 
-    }
 }))
 
 export default useBookStore

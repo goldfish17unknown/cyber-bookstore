@@ -14,7 +14,7 @@ class BookService
      */
     public function __construct(){}
 
-    public function getBooks($search = null, $category = null, $author = null){
+    public function getBooks($search = null, $category = null, $author = null, $itemsPerPage= 8){
         $query = Book::query(); 
         if (!empty($search)) {
             $query->where('title', 'LIKE', "%{$search}%");
@@ -25,7 +25,7 @@ class BookService
         if(!empty($author)){
             $query->where('author_id', $author);
         }
-        return $query->latest()->paginate(6);
+        return $query->latest()->paginate($itemsPerPage);
     }
 
     public function getBookById($id){

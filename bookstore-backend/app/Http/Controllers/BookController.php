@@ -26,7 +26,8 @@ class BookController extends Controller
         $search = $request->query("search");
         $category = $request->query("category");
         $author = $request->query("author");
-        $books = $this->bookService->getBooks($search, $category, $author);
+        $itemsPerPage = $request->query("itemsPerPage");
+        $books = $this->bookService->getBooks($search, $category, $author, $itemsPerPage);
         return response()->json([
             'data' => BookResource::collection($books),
             'current_page' => $books->currentPage(),

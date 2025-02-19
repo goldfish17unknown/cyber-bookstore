@@ -107,8 +107,8 @@ const SkeletonAuthors = () => {
   return (
     <div className="grid grid-cols-8 gap-2 mx-10 h-32">
     {skeletons.map((_, index) => (
-      <div className="flex flex-col items-center">
-        <Skeleton key={index} className="w-20 h-20 rounded-full" />
+      <div key={index} className="flex flex-col items-center">
+        <Skeleton className="w-20 h-20 rounded-full" />
       </div>
       
     ))}

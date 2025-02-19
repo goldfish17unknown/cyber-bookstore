@@ -21,11 +21,10 @@ const SelectCategory: React.FC<SelectCategoryProps> = ({categoryValue, setCatego
 
     const handleChange = (selectedOption: { value: string, label: string } | null) => {
         if (selectedOption) {
-            setCategoryValue(selectedOption.value); // Update the category value
+            setCategoryValue(selectedOption.value);
         } else {
-            setCategoryValue(''); // Reset to default if no category is selected
+            setCategoryValue('');
         }
-        console.log("hello")
     };
 
     return (

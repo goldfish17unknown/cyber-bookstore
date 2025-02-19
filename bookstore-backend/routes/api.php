@@ -20,6 +20,8 @@ use App\Http\Controllers\BorrowedBookController;
 
 Route::get('authors/front/limit', [AuthorController::class, 'getAuthorSlideShow']);
 
+Route::get('books/front/limit', [BookController::class, 'index']);
+
 
 
 
@@ -36,6 +38,10 @@ Route::middleware([AdminMiddleware::class])->group(function() {
 //* Authors tab
 Route::get('authors', [AuthorController::class, 'index']);
 Route::post('authors', [AuthorController::class, 'store']);
+
+//: book tab
+Route::post('books', [BookController::class, 'store']);
+Route::get('books', [BookController::class, 'index']); 
 
 
 //-----------------------
@@ -88,8 +94,8 @@ Route::middleware([AdminMiddleware::class])->group(function() {
     Route::post('admin/logout', [AuthController::class, 'logout']);
     Route::post('admin/info',[AuthController::class, 'getCurrentUser']);
     // * books management
-    Route::get('books', [BookController::class, 'index']);  //pagination 6
-    Route::post('books', [BookController::class, 'store']);
+     //pagination 6
+    
     
     Route::delete('books/{id}', [BookController::class, 'destroy']);
 
