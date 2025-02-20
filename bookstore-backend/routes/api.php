@@ -18,12 +18,11 @@ use App\Http\Controllers\BorrowedBookController;
 
 // ------------ front user view
 
-Route::get('authors/front/limit', [AuthorController::class, 'getAuthorSlideShow']);
 
+Route::get('authors/front/limit', [AuthorController::class, 'getAuthorSlideShow']);
 Route::get('books/front/limit', [BookController::class, 'index']);
 
-
-
+Route::get('authors/dropdown/limit', [AuthorController::class, 'getAuthorLimit']);
 
 
 
@@ -32,17 +31,22 @@ Route::get('books/front/limit', [BookController::class, 'index']);
 
 
 // -----------  Admin view
+Route::post('admin/login',[AuthController::class, 'login']);
+
 Route::middleware([AdminMiddleware::class])->group(function() {
+    Route::post('admin/logout', [AuthController::class, 'logout']);
 
 });
 //* Authors tab
 Route::get('authors', [AuthorController::class, 'index']);
 Route::post('authors', [AuthorController::class, 'store']);
 
-//: book tab
+//* book tab
 Route::post('books', [BookController::class, 'store']);
 Route::get('books', [BookController::class, 'index']); 
 
+//* category tab
+Route::get('categories', [CategoryController::class, 'index']);
 
 //-----------------------
 
@@ -89,9 +93,9 @@ Route::get('books/admin/withStatus', [BookController::class, 'bookWithPaginate']
 // * For admin
 // *********
 // Route::get('login')
-Route::post('admin/login',[AuthController::class, 'login']);
+
 Route::middleware([AdminMiddleware::class])->group(function() {
-    Route::post('admin/logout', [AuthController::class, 'logout']);
+    
     Route::post('admin/info',[AuthController::class, 'getCurrentUser']);
     // * books management
      //pagination 6
@@ -113,7 +117,7 @@ Route::get('authors/{id}', [AuthorController::class, 'show']);
 
 
 // * categories management
-Route::get('categories', [CategoryController::class, 'index']);  // also uses in admin panel, book create dropdown
+  // also uses in admin panel, book create dropdown
 
 
 

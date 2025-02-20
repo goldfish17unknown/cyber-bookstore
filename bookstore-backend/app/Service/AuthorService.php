@@ -78,4 +78,16 @@ class AuthorService
         }
         return $query->latest()->paginate($itemsPerPage);
     }
+
+    public function limitAuthors($search, $limit){
+        $query = Author::query();
+        if(!empty($search)){
+            $query->where('name', 'LIKE' , "%{$search}%");
+        }
+        if(!empty($limit)){
+            $limit = 8;
+        }
+        $authors = $query->limit($limit)->get();
+        return $authors;
+    }
 }

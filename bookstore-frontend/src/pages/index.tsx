@@ -1,11 +1,14 @@
 import CommonSearchInput from "@/components/custom/admin/CommonSearchInput";
 import { Button } from "@/components/ui/button";
 import useAuthorStore from "@/store/AuthorStore";
-import { SkipForward, SkipBack } from "lucide-react";
+import { SkipForward, SkipBack, Search } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton"
 import Link from "next/link";
-import { Author } from "@/types/common";
+import { Author, Book } from "@/types/common";
+import useBookStore from "@/store/BookStore";
+import SelectCategory from "@/components/custom/SelectCategory";
+import SelectAuthor from "@/components/custom/SelectAuthor";
 
 
 export default function Home() {
@@ -15,10 +18,49 @@ export default function Home() {
   const [authorSearch, setAuthorSearch ] = useState<string>("");
 
 
+  const BooksCurrentPage = useBookStore((state) => state.currentPage)
+  const booksSetCurrentPage = useBookStore((state) => state.setCurrentPage)
+  const BooksHasMorePages = useBookStore((state) => state.hasMorePages)
+  const booksLoadBooks = useBookStore((state) => state.loadBooks)
+
+  const [books, setBooks ] = useState<Book[]>([])
+  const [bookAuthor, setBookAuthor ] = useState<string>("")
+  const [bookCategory, setBookCategory ] = useState<string>("")
+  const [bookSearch, setBookSearch] = useState<string>("")
+
+  const [ bookLoading, setBookLoading] = useState<boolean>(true);
+
+
   useEffect(() => {
     setCurrentPage(1)
     getAuthors()
   }, [authorSearch]);
+
+  useEffect(() => {
+    setBooks([])
+    booksSetCurrentPage(1)
+    setBookSearch("")
+    getBooks("")
+  }, [bookCategory, bookAuthor])
+
+  const getBooks = async (searchKey: string) => {
+    setBookLoading(true);
+    const data = await booksLoadBooks(searchKey, bookCategory, "", 18)
+    setBooks((prev) => [...prev, ...data]);
+    setBookLoading(false);
+  }
+
+
+  const handleBookSearch = () => {
+    setBooks([])
+    booksSetCurrentPage(1)
+    getBooks(bookSearch)
+  }
+
+
+
+
+
 
   const getAuthors = async() => {
     setAuthorLoading(true);
@@ -64,8 +106,7 @@ export default function Home() {
               <p className="flex col-span-8 items-center justify-center text-center text-gray-500 h-32">No data</p>
             ) : (
                 <div className="grid grid-cols-8 gap-2  mx-10 h-32">
-                  {authors.map((author) => (
-                    
+                  {authors.map((author) => (  
                       <div key={author.id} className="flex flex-col items-center">
                         <Link href={`/authors/${author.id}`}>
                           <img src={author.image ? `http://localhost:8000/${author.image}` : "/placeholders/user-placeholder.png"}
@@ -87,11 +128,49 @@ export default function Home() {
 
       <section className="mt-5">
         <div className="md:flex md:justify-between lg:mx-10 mt-10">
-        <h1 className="text-4xl font-bold">Books</h1>
+          <h1 className="text-4xl font-bold">Books</h1>
+          <div className=" w-4/12">
+            <div className="flex">
+              <CommonSearchInput searchValue={bookSearch} setSearchValue={setBookSearch} placeholder={"search by book's name..."} />
+              <Button variant={"yellow"} onClick={handleBookSearch}><Search /></Button>
+            </div>
+            <div className="flex mt-3">
+              <div className="flex w-1/2 items-center me-4">
+                <p className="font-semibold text-1xl me-2">Author:</p>
+                <SelectAuthor authorValue={bookAuthor} setAuthorValue={setBookAuthor} />
+
+              </div>
+              <div className="flex w-1/2 items-center">
+                <p className="font-semibold text-1xl me-2">Category:</p>
+                <SelectCategory categoryValue={bookCategory} setCategoryValue={setBookCategory} />
+                
+              </div>
+            </div>
+          </div>      
         </div>
+        {/* Show a list of books */}
+        <div className="grid grid-cols-5 gap-4 mt-12 justify-items-center">
+          {
+            bookLoading ? (
+              <BookSkeleton count={10} />
 
-
-
+            ) : books.length === 0 ? (
+              <p className="flex col-span-8 items-center justify-center text-center text-gray-500 h-32">No data</p>
+            ) : books.map((book) => (
+              <div key={book.id}>
+                <Link href={`/books/${book.id}`} className="flex flex-col w-48 mb-3">
+                  <img src={book.image ? `${process.env.NEXT_PUBLIC_IMAGE_URL}/${book.image}` : "/placeholders/user-placeholder.png"} 
+                    className="w-full h-72 rounded-md shadow-lg"/>
+                      <div className="w-full  mt-2">
+                        <span className={`flex-shrink-0 rounded-lg p-1 py-0 text-white ${book.borrowStatus === "Available" ? "bg-green-600" : "bg-red-500"}`}>{book.borrowStatus}</span>
+                        <p className="truncate w-full font-semibold text-xl">{book.title}</p>
+                      </div>
+                </Link>
+              </div>
+            ))
+          }
+       
+        </div>
       </section>
 
     </div>
@@ -114,5 +193,17 @@ const SkeletonAuthors = () => {
     ))}
   </div>
   )
+}
 
+const BookSkeleton: React.FC<{count: number}> = ({ count }) => {
+    const skeletons = Array.from({ length: count });
+    return (
+        <>
+            {skeletons.map((_, index) => (
+                <div  key={index} >
+                    <Skeleton className="w-48 h-72" />
+                </div>      
+            ))}
+        </>
+    )
 }

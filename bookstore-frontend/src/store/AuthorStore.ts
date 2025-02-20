@@ -47,7 +47,7 @@ const useAuthorStore = create<AuthorState>((set, get) => ({
                     'Content-Type': 'application/json'
                 }
             })
-            if(!response.ok) throw new Error("failed to fetch books");
+            if(!response.ok) throw new Error("failed to fetch Authors");
 
             const data = await response.json();
             set({ 
@@ -145,7 +145,7 @@ const useAuthorStore = create<AuthorState>((set, get) => ({
     limitFetchAuthors: async(itemsPerPage=8, search="") => {
         try{
             const { currentPage } = get()
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/authors/front/limit?&search=${search}&page=${currentPage}`);
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/authors/front/limit?&search=${search}&page=${currentPage}&itemsPerPage=${itemsPerPage}`);
             if (!response.ok){
                 throw new Error("Error in fetching datas");
             }

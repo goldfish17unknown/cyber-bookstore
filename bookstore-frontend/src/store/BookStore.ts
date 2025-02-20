@@ -14,7 +14,7 @@ interface BookState {
     addBook: (title: string, description: string, isbn: string, author_id: number, category_id: number, image?: File | null) => Promise<void>;
     updateBook: (id: number, title: string, description: string, isbn: string, author_id: number, category_id: number, image?: File | null) => Promise<void>;
     deleteBook: (id: number) => Promise<void>;
-    loadBooks: (search: string, category: string, author: string, itemsPerPage?: number) => Promise<Book[]>
+    loadBooks: (search?: string, category?: string, author?: string, itemsPerPage?: number) => Promise<Book[]>
 }
 
 const useBookStore = create<BookState>((set, get) => ({

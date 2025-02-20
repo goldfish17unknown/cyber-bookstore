@@ -47,7 +47,7 @@ const AuthorsPage = () => {
             setBooks([])
             setCurrentPage(1)
             setSearch("")
-            fetchAuthorBook(17, search);
+            fetchAuthorBook(17, "");
         }
     }, [currentAuthor, category]);
 
@@ -160,7 +160,7 @@ const AuthorsPage = () => {
                               ) :  books.map((book) => (
                                 <div key={book.id} >
                                 <Link href={`/books/${book.id}`} className="flex flex-col w-48 mb-3">
-                                    <img src={book.image ? `http://localhost:8000/${book.image}` : "/placeholders/user-placeholder.png"} 
+                                    <img src={book.image ? `${process.env.NEXT_PUBLIC_IMAGE_URL}/${book.image}` : "/placeholders/user-placeholder.png"} 
                                     className="w-full h-72 rounded-md shadow-lg"/>
                                     <div className="w-full  mt-2">
                                         <span className={`flex-shrink-0 rounded-lg p-1 py-0 text-white ${book.borrowStatus === "Available" ? "bg-green-600" : "bg-red-500"}`}>{book.borrowStatus}</span>
@@ -173,7 +173,10 @@ const AuthorsPage = () => {
                         }
                         {moreBookLoading && <BookSkeleton count={4} />}
                     </div>
-                    <div ref={observerRef} className="h-10"></div>
+                    {
+                        !bookLoading && (<div ref={observerRef} className="h-10"></div>)
+                    }
+                    
                 </section>
 
 
@@ -202,6 +205,8 @@ const BookSkeleton: React.FC<BookSkeletonProps> = ({ count }) => {
         </>
     )
 }
+
+
 
 
 export default AuthorsPage;

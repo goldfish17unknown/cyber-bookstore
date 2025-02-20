@@ -127,4 +127,13 @@ class AuthorController extends Controller
             'has_more_pages' => $data->hasMorePages(),
         ], 200);
     }
+
+    public function getAuthorLimit(Request $request){
+        $search = $request->query("search");
+        $limit = $request->query("limit");
+        $data = $this->authorService->limitAuthors($search, $limit);
+        return response()->json([
+            AuthorResource::collection($data)
+        ], 200);
+    }
 }
