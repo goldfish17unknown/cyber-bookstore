@@ -10,7 +10,7 @@ interface BookState {
     lastPage: number;
     hasMorePages: boolean;
     fetchBooks: (search?: string, category?: string, author?: string) => Promise<void>;
-    getBook: (id: number) => Promise<void>;
+    getBook: (id: string) => Promise<Book>;
     addBook: (title: string, description: string, isbn: string, author_id: number, category_id: number, image?: File | null) => Promise<void>;
     updateBook: (id: number, title: string, description: string, isbn: string, author_id: number, category_id: number, image?: File | null) => Promise<void>;
     deleteBook: (id: number) => Promise<void>;
@@ -47,7 +47,7 @@ const useBookStore = create<BookState>((set, get) => ({
                 throw new Error("error fetching data.")
             }
             const data = await response.json()
-            set({ currentBook: data })
+            return data;
         } catch (error){
             throw error;
         }

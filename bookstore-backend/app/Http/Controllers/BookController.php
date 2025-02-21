@@ -59,9 +59,9 @@ class BookController extends Controller
     public function show($id){
         try{
             $book = $this->bookService->getBookById($id);
-            return response()->json([
+            return response()->json(
                 new BookResource($book)
-            ], 200);
+            , 200);
         } catch (Exception $e){
             Log::error($e->getMessage());
             Log::info("error in BookConntroller@show");

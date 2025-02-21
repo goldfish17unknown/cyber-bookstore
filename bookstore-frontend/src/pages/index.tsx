@@ -190,7 +190,11 @@ export default function Home() {
                   <img src={book.image ? `${process.env.NEXT_PUBLIC_IMAGE_URL}/${book.image}` : "/placeholders/user-placeholder.png"} 
                     className="w-full h-72 rounded-md shadow-lg"/>
                       <div className="w-full  mt-2">
-                        <span className={`flex-shrink-0 rounded-lg p-1 py-0 text-white ${book.borrowStatus === "Available" ? "bg-green-600" : "bg-red-500"}`}>{book.borrowStatus}</span>
+                        <div className="flex">
+                          <span className={`flex-shrink-0 rounded-lg p-1 py-0 text-white ${book.borrowStatus === "Available" ? "bg-green-600" : "bg-red-500"}`}>{book.borrowStatus}</span>
+                          <p className="truncate ms-1">#{book.isbn}</p>
+                        </div>
+                        
                         <p className="truncate w-full font-semibold text-xl">{book.title}</p>
                       </div>
                 </Link>
