@@ -132,8 +132,8 @@ class AuthorController extends Controller
         $search = $request->query("search");
         $limit = $request->query("limit");
         $data = $this->authorService->limitAuthors($search, $limit);
-        return response()->json([
+        return response()->json(
             AuthorResource::collection($data)
-        ], 200);
+        , 200);
     }
 }

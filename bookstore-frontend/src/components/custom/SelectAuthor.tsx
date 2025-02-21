@@ -11,19 +11,22 @@ interface SelectAuthorProps {
 
 const SelectAuthor: React.FC<SelectAuthorProps> = ({authorValue, setAuthorValue}) => {
     const [options, setOptions] = useState<{ value: string; label: string}[]>([]);
-    const [ loading, setLoading] =useState(false);
+    const [ loading, setLoading] =useState<boolean>(false);
+    const [ isClient, setIsClient] = useState<boolean>(false);
 
     const fetchAuthorDropDown = async (inputValue = "") => {
         setLoading(true);
         try{
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/authors/dropdown/limit?search=${inputValue}&limit=8`)
             const data = await response.json();
+
             const authorOptions = data.map((author: Author) => ({
-                value: author.id,
+                value: author.id?.toString(),
                 label: author.name
             }))
 
             setOptions([{ value: "", label: "All"}, ...authorOptions]);
+
         } catch (error){
             throw error
         }
@@ -34,7 +37,10 @@ const SelectAuthor: React.FC<SelectAuthorProps> = ({authorValue, setAuthorValue}
 
     useEffect(() => {
         fetchAuthorDropDown();
+        setIsClient(true);
     }, [])
+
+    if (!isClient) return null;
 
     return (
         <Select 

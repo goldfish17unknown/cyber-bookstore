@@ -1,8 +1,8 @@
 import CommonSearchInput from "@/components/custom/admin/CommonSearchInput";
 import { Button } from "@/components/ui/button";
 import useAuthorStore from "@/store/AuthorStore";
-import { SkipForward, SkipBack, Search } from "lucide-react";
-import { useEffect, useState } from "react";
+import { SkipForward, SkipBack, Search, BookA } from "lucide-react";
+import { useEffect, useRef, useState } from "react";
 import { Skeleton } from "@/components/ui/skeleton"
 import Link from "next/link";
 import { Author, Book } from "@/types/common";
@@ -29,6 +29,9 @@ export default function Home() {
   const [bookSearch, setBookSearch] = useState<string>("")
 
   const [ bookLoading, setBookLoading] = useState<boolean>(true);
+  const loadingRef = useRef<boolean>(false);
+  const observerRef = useRef<HTMLDivElement | null>(null);
+  const [ moreBookLoading, setMoreBookLoading ] = useState<boolean>(false);
 
 
   useEffect(() => {
@@ -43,12 +46,40 @@ export default function Home() {
     getBooks("")
   }, [bookCategory, bookAuthor])
 
+  useEffect(() => {
+    if(!observerRef.current) return;
+
+    if(moreBookLoading) return;
+
+    const observer = new IntersectionObserver((entries) => {
+      if(entries[0].isIntersecting &&  BooksHasMorePages) {
+        getMoreBooks();
+      }
+    },{ rootMargin: "300px" } );
+
+    observer.observe(observerRef.current);
+    return () => observer.disconnect();
+  }, [books, hasMorePages])
+
   const getBooks = async (searchKey: string) => {
     setBookLoading(true);
-    const data = await booksLoadBooks(searchKey, bookCategory, "", 18)
+    const data = await booksLoadBooks(searchKey, bookCategory, bookAuthor, 18)
     setBooks((prev) => [...prev, ...data]);
     setBookLoading(false);
   }
+
+  const getMoreBooks = async () => {
+    booksSetCurrentPage(BooksCurrentPage + 1);
+    if (loadingRef.current) return;
+    if(!moreBookLoading && hasMorePages) {
+      loadingRef.current = true;
+      setMoreBookLoading(true)
+      const data = await booksLoadBooks(bookSearch, bookCategory, bookAuthor, 18);
+      setBooks((prev) => [...prev, ...data]);
+    }
+    setMoreBookLoading(false)
+    loadingRef.current = false;
+  } 
 
 
   const handleBookSearch = () => {
@@ -58,15 +89,12 @@ export default function Home() {
   }
 
 
-
-
-
-
   const getAuthors = async() => {
     setAuthorLoading(true);
     setAuthors(await limitFetchAuthors(8,authorSearch));
     setAuthorLoading(false);
   }
+
 
   const handleNext = async() => {
     setAuthorLoading(true);
@@ -169,8 +197,11 @@ export default function Home() {
               </div>
             ))
           }
-       
+          {moreBookLoading && <BookSkeleton count={5} />}
         </div>
+        {
+          !bookLoading && (<div ref={observerRef} className="h-10"></div>)
+        }
       </section>
 
     </div>

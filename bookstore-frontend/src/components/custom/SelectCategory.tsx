@@ -1,5 +1,5 @@
 import useCategoryStore from '@/store/CategoryStore';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import Select from 'react-select'
 
 interface SelectCategoryProps {
@@ -10,6 +10,7 @@ interface SelectCategoryProps {
 
 const SelectCategory: React.FC<SelectCategoryProps> = ({categoryValue, setCategoryValue }) => {
     const { categories, fetchCategories } = useCategoryStore()
+    const [isClient, setIsClient] = useState(false);
     const options = [
         { value: '', label: 'All' },
         ...categories.map((cat) => ({ value: cat.id.toString(), label: cat.name })),
@@ -17,6 +18,7 @@ const SelectCategory: React.FC<SelectCategoryProps> = ({categoryValue, setCatego
 
     useEffect(() => {
         fetchCategories();
+        setIsClient(true);
     }, []);
 
     const handleChange = (selectedOption: { value: string, label: string } | null) => {
@@ -26,6 +28,8 @@ const SelectCategory: React.FC<SelectCategoryProps> = ({categoryValue, setCatego
             setCategoryValue('');
         }
     };
+
+    if (!isClient) return null;
 
     return (
         <Select

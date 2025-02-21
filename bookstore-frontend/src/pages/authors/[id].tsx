@@ -59,7 +59,7 @@ const AuthorsPage = () => {
             if (entries[0].isIntersecting && hasMorePages) {
                 fetchMoreBooks();
             }
-        });
+        }, { rootMargin: "300px" } );
 
         observer.observe(observerRef.current);
         return () => observer.disconnect();
