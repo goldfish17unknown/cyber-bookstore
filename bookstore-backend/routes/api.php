@@ -18,16 +18,23 @@ use App\Http\Controllers\BorrowedBookController;
 
 // ------------ front user view
 
-
 Route::get('authors/front/limit', [AuthorController::class, 'getAuthorSlideShow']);
 Route::get('books/front/limit', [BookController::class, 'index']);
-
 Route::get('authors/dropdown/limit', [AuthorController::class, 'getAuthorLimit']);
 
-
-
-
 //------------------------------
+
+//-------------  Common 
+
+//* categories
+Route::get('categories', [CategoryController::class, 'index']);
+
+
+// -------------------------
+
+
+
+
 
 
 // -----------  Admin view
@@ -37,6 +44,19 @@ Route::middleware([AdminMiddleware::class])->group(function() {
     Route::post('admin/logout', [AuthController::class, 'logout']);
 
 });
+
+//* category tab
+Route::post('categories', [CategoryController::class, 'store']);
+Route::put('categories/{id}', [CategoryController::class, 'update']);
+Route::delete('categories/{id}', [CategoryController::class, 'destroy']);
+
+
+
+
+
+
+
+
 //* Authors tab
 Route::get('authors', [AuthorController::class, 'index']);
 Route::post('authors', [AuthorController::class, 'store']);
@@ -45,8 +65,7 @@ Route::post('authors', [AuthorController::class, 'store']);
 Route::post('books', [BookController::class, 'store']);
 Route::get('books', [BookController::class, 'index']); 
 
-//* category tab
-Route::get('categories', [CategoryController::class, 'index']);
+
 
 //-----------------------
 
@@ -56,9 +75,9 @@ Route::post('user/register',[AuthController::class, 'register']);
 
 
 
-Route::post('categories', [CategoryController::class, 'store']);
-Route::put('categories/{id}', [CategoryController::class, 'update']);
-Route::delete('categories/{id}', [CategoryController::class, 'destroy']);
+
+
+
 
 
 // Author routes

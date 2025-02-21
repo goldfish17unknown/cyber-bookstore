@@ -14,7 +14,6 @@ const AdminCategoriesManagement: NextPageWithLayout = () => {
     const deleteCategory = useCategoryStore((state) => state.deleteCategory);
     const createCategory = useCategoryStore((state) => state.createCategory)
 
-    const [categories, setCategories] = useState<Category[]>([]);
     const [search, setSearch] = useState<string>("");
 
     const [newCatName, setNewCatName]= useState<string>("");
@@ -64,7 +63,7 @@ const AdminCategoriesManagement: NextPageWithLayout = () => {
                   dialogOpen={createDialogOpen} setDialogOpen={setCreateDialogOpen} />
                 </div>
             </div>
-            <CategoriesTable categories={icategories} deleteFunction={handleDelete}/>
+            <CategoriesTable categories={categories} deleteFunction={handleDelete}/>
             
         </div>
     )

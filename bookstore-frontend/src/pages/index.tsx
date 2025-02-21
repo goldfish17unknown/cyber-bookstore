@@ -143,7 +143,7 @@ export default function Home() {
                         </Link>
                       </div>
                   ))}
-                </div>               
+                </div>
               )
             }
             <Button onClick={handleNext} disabled={!hasMorePages} className="absolute right-0 top-1/3 transform -translate-y-1/3 p-2 bg-gray-600  rounded-full">
