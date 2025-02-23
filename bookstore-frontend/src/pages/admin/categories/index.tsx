@@ -6,6 +6,8 @@ import { NextPageWithLayout } from "@/pages/_app"
 import { Category } from "@/types/common"
 import { ReactElement, useEffect, useState } from "react"
 import useCategoryStore from "@/store/CategoryStore"
+import CommonPagination from "@/components/custom/admin/CommonPagination"
+import toast from "react-hot-toast"
 
 
 const AdminCategoriesManagement: NextPageWithLayout = () => {
@@ -16,22 +18,47 @@ const AdminCategoriesManagement: NextPageWithLayout = () => {
 
     const [search, setSearch] = useState<string>("");
 
+    const [loading,  setLoading] = useState<boolean>(true);
+
     const [newCatName, setNewCatName]= useState<string>("");
     const [createDialogOpen, setCreateDialogOpen] = useState<boolean>(false)
 
+    const [ currentPage, setCurrentPage] = useState<number>(1);
+    const DataPerPage = 8;
+
+    const indexOfLastPage = currentPage * DataPerPage;
+    const indexOfFirstPage = indexOfLastPage - DataPerPage
+
+    const filteredData = categories.filter((category: Category) => category.name.toLowerCase().includes(search.toLowerCase()))
+    const currentData = filteredData .slice(indexOfFirstPage, indexOfLastPage)
+    const totalPages = Math.ceil(filteredData.length / DataPerPage);
+
     useEffect(() => {
-        fetchCategories()
+        getCategoryData();
     }, [])
+
+    useEffect(() => {
+        setCurrentPage(1);
+    }, [search])
+
+    const getCategoryData = async() => {
+        setLoading(true);
+        await fetchCategories();
+        setLoading(false);
+    }
 
 
 
 
     const handleCreate = async(e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
-        await createCategory(newCatName)
-        setCreateDialogOpen(false)
-        setNewCatName("");
-        fetchCategories();
+        if(await createCategory(newCatName)){
+            setCreateDialogOpen(false)
+            toast.success("Category created successfully")
+            setNewCatName("");
+            fetchCategories();
+        }
+        
     }
 
 
@@ -63,7 +90,9 @@ const AdminCategoriesManagement: NextPageWithLayout = () => {
                   dialogOpen={createDialogOpen} setDialogOpen={setCreateDialogOpen} />
                 </div>
             </div>
-            <CategoriesTable categories={categories} deleteFunction={handleDelete}/>
+            <CategoriesTable categories={currentData} deleteFunction={handleDelete} firstItemIndex={indexOfFirstPage}/>
+            <CommonPagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
+
             
         </div>
     )

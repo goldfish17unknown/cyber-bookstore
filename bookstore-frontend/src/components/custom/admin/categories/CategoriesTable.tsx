@@ -6,9 +6,10 @@ import { Button } from "@/components/ui/button";
 interface CategoriesTableProps{
     categories: Category[];
     deleteFunction: (id: number) => void;
+    firstItemIndex: number;
 }
 
-const CategoriesTable: React.FC<CategoriesTableProps> = ({ categories, deleteFunction }) => {    
+const CategoriesTable: React.FC<CategoriesTableProps> = ({ categories, deleteFunction, firstItemIndex }) => {    
 
     return (
         <Table className="mx-auto md:w-2/3 sm:w-full">
@@ -25,10 +26,10 @@ const CategoriesTable: React.FC<CategoriesTableProps> = ({ categories, deleteFun
            <TableBody>
                 {categories.map((category, index) => (
                     <TableRow key={category.id}>
-                        <TableCell>{index + 1}</TableCell>
+                        <TableCell>{firstItemIndex + 1 + index}</TableCell>
                         <TableCell>{category.name}</TableCell>
                         <TableCell>
-                            <Button variant={"yellow"} className="ms-4 my-1">Edit</Button>
+                            <Button variant={"yellow"} className=" my-1">Edit</Button>
 
                             < CommonDeleteModal deleteHandler={deleteFunction} deleteItemID={category.id} />
                         </TableCell>

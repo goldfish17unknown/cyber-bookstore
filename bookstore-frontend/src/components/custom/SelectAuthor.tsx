@@ -49,7 +49,7 @@ const SelectAuthor: React.FC<SelectAuthorProps> = ({authorValue, setAuthorValue}
         onInputChange={(inputValue) => debouncedFetchAuthors(inputValue)}
         onChange={(selectedOption) => setAuthorValue(selectedOption?.value || "")}
         value={options.find(option => option.value === authorValue) || { value: "", label: "All" }}
-        className="w-full"
+        className="w-full "
         />
     )
 }

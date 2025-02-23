@@ -112,7 +112,7 @@ export default function Home() {
 
 
   return (
-    <div className="container ms-5 lg:mx-10 ">
+    <div className=" lg:ps-10 lg:pe-5 w-full">
       <section className="pb-5 border-b-2">
         <div className="md:flex md:justify-between lg:mx-10 mt-10">
           <h1 className="text-4xl font-bold">Authors</h1>
@@ -158,11 +158,11 @@ export default function Home() {
         <div className="md:flex md:justify-between lg:mx-10 mt-10">
           <h1 className="text-4xl font-bold">Books</h1>
           <div className=" w-4/12">
-            <div className="flex">
+            <div className="flex w-full">
               <CommonSearchInput searchValue={bookSearch} setSearchValue={setBookSearch} placeholder={"search by book's name..."} />
               <Button variant={"yellow"} onClick={handleBookSearch}><Search /></Button>
             </div>
-            <div className="flex mt-3">
+            <div className="flex mt-3 w-full">
               <div className="flex w-1/2 items-center me-4">
                 <p className="font-semibold text-1xl me-2">Author:</p>
                 <SelectAuthor authorValue={bookAuthor} setAuthorValue={setBookAuthor} />

@@ -26,6 +26,9 @@ Route::get('authors/dropdown/limit', [AuthorController::class, 'getAuthorLimit']
 
 //-------------  Common 
 
+//* get author by id
+Route::get('authors/{id}', [AuthorController::class, 'show']);
+
 //* categories
 Route::get('categories', [CategoryController::class, 'index']);
 
@@ -43,12 +46,16 @@ Route::post('admin/login',[AuthController::class, 'login']);
 Route::middleware([AdminMiddleware::class])->group(function() {
     Route::post('admin/logout', [AuthController::class, 'logout']);
 
+    // * categories tab
+    Route::post('categories', [CategoryController::class, 'store']);
+    Route::put('categories/{id}', [CategoryController::class, 'update']);
+    Route::delete('categories/{id}', [CategoryController::class, 'destroy']);
+
+
 });
 
 //* category tab
-Route::post('categories', [CategoryController::class, 'store']);
-Route::put('categories/{id}', [CategoryController::class, 'update']);
-Route::delete('categories/{id}', [CategoryController::class, 'destroy']);
+
 
 
 
@@ -126,7 +133,7 @@ Route::middleware([AdminMiddleware::class])->group(function() {
 
 
 
-Route::get('authors/{id}', [AuthorController::class, 'show']);
+
     Route::get('books/{id}', [BookController::class, 'show']);
 
 

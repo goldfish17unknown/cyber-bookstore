@@ -61,15 +61,8 @@ const useAuthorStore = create<AuthorState>((set, get) => ({
     },
     fetchSingleAuthor: async(id) => {
         try {
-            const token = useAuthStore.getState().accessToken;
-            if(!token) throw new Error("Unauthorized");
-
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/authors/${id}`, {
-                method: "GET",
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/json'
-                }
+                method: "GET"
             });
             if (!response.ok) throw new Error("Failed to fetch author");
             const data = await response.json();

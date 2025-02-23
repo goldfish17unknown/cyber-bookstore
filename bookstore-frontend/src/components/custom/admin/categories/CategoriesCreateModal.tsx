@@ -14,6 +14,9 @@ interface CategoryCreateModal{
 }
 
 const CategoryCreateModal: React.FC<CategoryCreateModal> = ({ createFunction, catName, setCatName, dialogOpen, setDialogOpen }) => {
+
+
+
     return (
         <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
             <DialogTrigger asChild>

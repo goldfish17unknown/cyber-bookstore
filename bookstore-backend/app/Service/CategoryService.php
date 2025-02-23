@@ -15,7 +15,7 @@ class CategoryService
 
     public function getAllCategories()
     {
-        $categories = Category::all();
+        $categories = Category::latest()->get();
         return $categories;
     }
 

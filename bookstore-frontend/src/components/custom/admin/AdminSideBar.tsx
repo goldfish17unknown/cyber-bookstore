@@ -1,7 +1,10 @@
 "use client"
 import {Sidebar, SidebarContent, SidebarFooter, SidebarGroup, SidebarGroupContent, SidebarGroupLabel, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from "@/components/ui/sidebar";
+import useAuthStore from "@/store/AuthStore";
 import { BookType,  UserPen, User, HousePlus, ChartColumnStacked, LogOut } from 'lucide-react';
 import Link from "next/link";
+import { useRouter } from "next/router";
+
 
 const items = [
     {
@@ -37,6 +40,13 @@ const items = [
 ]
 
 const AdminSideBar: React.FC = () => {
+    const router = useRouter();
+    const logout = useAuthStore().logout;
+
+    const handleLogout = () => {
+        logout()
+        router.push('/admin/login');
+    }
     return (
         <Sidebar variant="floating" collapsible="icon">
             <SidebarContent>
@@ -65,10 +75,10 @@ const AdminSideBar: React.FC = () => {
 
             <SidebarFooter>
             <SidebarMenuButton >
-                <a href="" className="ml-auto flex items-center text-2xl">
+                <div className="ml-auto flex items-center text-2xl cursor-pointer" onClick={handleLogout}>
                     <LogOut />
                     <span>Logout</span>
-                </a>
+                </div>
             </SidebarMenuButton>
 
             </SidebarFooter>
