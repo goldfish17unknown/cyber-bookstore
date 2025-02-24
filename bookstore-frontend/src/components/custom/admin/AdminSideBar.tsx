@@ -43,8 +43,8 @@ const AdminSideBar: React.FC = () => {
     const router = useRouter();
     const logout = useAuthStore().logout;
 
-    const handleLogout = () => {
-        logout()
+    const handleLogout = async () => {
+        await logout()
         router.push('/admin/login');
     }
     return (

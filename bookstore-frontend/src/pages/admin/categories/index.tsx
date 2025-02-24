@@ -1,13 +1,13 @@
 import CategoryCreateModal from "@/components/custom/admin/categories/CategoriesCreateModal"
 import CategoriesTable from "@/components/custom/admin/categories/CategoriesTable"
 import CommonSearchInput from "@/components/custom/admin/CommonSearchInput"
-import { AdminLayout } from "@/components/layouts/AdminLayout"
 import { NextPageWithLayout } from "@/pages/_app"
 import { Category } from "@/types/common"
 import { ReactElement, useEffect, useState } from "react"
 import useCategoryStore from "@/store/CategoryStore"
 import CommonPagination from "@/components/custom/admin/CommonPagination"
 import toast from "react-hot-toast"
+import AdminLayout from "@/components/layouts/AdminLayout"
 
 
 const AdminCategoriesManagement: NextPageWithLayout = () => {
@@ -63,9 +63,11 @@ const AdminCategoriesManagement: NextPageWithLayout = () => {
 
 
     const handleDelete = async(id: number) => {
-        await deleteCategory(id);
+        const response = await deleteCategory(id);
         await fetchCategories();
-        toast.success("Category deleted successfully")
+        if (response){
+            toast.success("Category deleted successfully")
+        }
     }
 
     return (

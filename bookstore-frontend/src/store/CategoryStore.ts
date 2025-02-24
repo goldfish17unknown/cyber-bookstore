@@ -8,7 +8,7 @@ interface CategoryState {
     fetchCategories: () => Promise<void>;
     createCategory: (name: string) => Promise<boolean>;
     updateCategory: (id: number, name: string) => Promise<boolean>;
-    deleteCategory: (id: number) => Promise<void>;
+    deleteCategory: (id: number) => Promise<boolean>;
 }
 
 const useCategoryStore = create<CategoryState>((set, get) => ({
@@ -28,7 +28,10 @@ const useCategoryStore = create<CategoryState>((set, get) => ({
     createCategory: async(name) => {
         try {
             const token = useAuthStore.getState().accessToken;
-            if (!token) throw new Error("Unauthorized");
+            if (!token) {
+                toast.error("Unauthorized");
+                return false
+            }        
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories`, {
                 method: 'POST',
                 headers: {
@@ -57,7 +60,10 @@ const useCategoryStore = create<CategoryState>((set, get) => ({
     updateCategory: async(id, name) => {
         try {
             const token = useAuthStore.getState().accessToken;
-            if (!token) throw new Error("Unauthorized");
+            if (!token) {
+                toast.error("Unauthorized");
+                return false
+            }    
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories/${id}`, {
                 method: 'PUT',
                 headers: {
@@ -86,7 +92,10 @@ const useCategoryStore = create<CategoryState>((set, get) => ({
     deleteCategory: async (id) => {
         try{
             const token = useAuthStore.getState().accessToken;
-            if (!token) throw new Error("Unauthorized");
+            if (!token) {
+                toast.error("Unauthorized");
+                return false
+            }
             const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories/${id}`, {
                 method: "DELETE",
                 headers: {
@@ -96,6 +105,7 @@ const useCategoryStore = create<CategoryState>((set, get) => ({
             if(!response.ok){
                 throw new Error("Error in fetch data")
             }
+            return true
         } catch (error){
             throw error;
         }

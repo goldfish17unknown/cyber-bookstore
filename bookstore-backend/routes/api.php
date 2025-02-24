@@ -54,19 +54,16 @@ Route::middleware([AdminMiddleware::class])->group(function() {
 
 });
 
-//* category tab
-
-
-
-
-
-
-
-
 
 //* Authors tab
 Route::get('authors', [AuthorController::class, 'index']);
 Route::post('authors', [AuthorController::class, 'store']);
+Route::put('authors/{id}', [AuthorController::class, 'update']);
+Route::delete('authors/{id}', [AuthorController::class, 'destroy']);
+
+
+
+
 
 //* book tab
 Route::post('books', [BookController::class, 'store']);
@@ -75,6 +72,12 @@ Route::get('books', [BookController::class, 'index']);
 
 
 //-----------------------
+
+
+
+Route::get('authors/{id}/books', [AuthorController::class, 'getBooksByAuthors']);
+
+
 
 
 
@@ -91,9 +94,7 @@ Route::post('user/register',[AuthController::class, 'register']);
 
 
 
-Route::put('authors/{id}', [AuthorController::class, 'update']);
-Route::delete('authors/{id}', [AuthorController::class, 'destroy']);
-Route::get('authors/{id}/books', [AuthorController::class, 'getBooksByAuthors']);
+
 
 
 //Book routes
@@ -168,22 +169,6 @@ Route::get('borrow', [BorrowedBookController::class, 'borrowedList']);
 Route::post('borrow', [BorrowedBookController::class, 'store']);
 Route::delete('borrow/{id}', [BorrowedBookController::class, 'deleteRecord']);
 Route::put('borrow/return/{id}', [BorrowedBookController::class, 'returnBook']);
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
