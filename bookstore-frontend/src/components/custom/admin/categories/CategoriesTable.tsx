@@ -2,6 +2,7 @@ import { Table, TableBody, TableCaption, TableCell, TableHead, TableHeader, Tabl
 import { Category } from "@/types/common";
 import CommonDeleteModal from "../CommonDeleteModal";
 import { Button } from "@/components/ui/button";
+import CategoryUpdateModal from "./CategoriesUpdateModal";
 
 interface CategoriesTableProps{
     categories: Category[];
@@ -29,7 +30,8 @@ const CategoriesTable: React.FC<CategoriesTableProps> = ({ categories, deleteFun
                         <TableCell>{firstItemIndex + 1 + index}</TableCell>
                         <TableCell>{category.name}</TableCell>
                         <TableCell>
-                            <Button variant={"yellow"} className=" my-1">Edit</Button>
+                            <CategoryUpdateModal 
+                            category={category}  />
 
                             < CommonDeleteModal deleteHandler={deleteFunction} deleteItemID={category.id} />
                         </TableCell>

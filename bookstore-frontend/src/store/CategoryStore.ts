@@ -7,7 +7,7 @@ interface CategoryState {
     categories: Category[];
     fetchCategories: () => Promise<void>;
     createCategory: (name: string) => Promise<boolean>;
-    updateCategory: (id: number, name: string) => Promise<void>;
+    updateCategory: (id: number, name: string) => Promise<boolean>;
     deleteCategory: (id: number) => Promise<void>;
 }
 
@@ -66,9 +66,18 @@ const useCategoryStore = create<CategoryState>((set, get) => ({
                 },
                 body: JSON.stringify({ name: name })
             })
+            const responseData = await response.json();
             if(!response.ok){
-                throw new Error("Failed to update data.");
+                if (responseData.errors?.name) { 
+                    toast.error("Validation Error: " + responseData.errors.name[0]);
+                     
+                } else {
+                    toast.error("Failed to create category: " + responseData.message);
+                }
+                toast
+                return false;
             }
+            return true;
         } catch (error){
             throw error;
         }

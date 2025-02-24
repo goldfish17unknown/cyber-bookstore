@@ -54,9 +54,9 @@ const AdminCategoriesManagement: NextPageWithLayout = () => {
         e.preventDefault();
         if(await createCategory(newCatName)){
             setCreateDialogOpen(false)
-            toast.success("Category created successfully")
             setNewCatName("");
             fetchCategories();
+            toast.success("Category created successfully")
         }
         
     }
@@ -64,14 +64,9 @@ const AdminCategoriesManagement: NextPageWithLayout = () => {
 
     const handleDelete = async(id: number) => {
         await deleteCategory(id);
-        fetchCategories();
+        await fetchCategories();
+        toast.success("Category deleted successfully")
     }
-
-
-    const handleEdit = async() => {
-
-    }
-
 
     return (
         <div className="w-full mt-10">
@@ -80,11 +75,9 @@ const AdminCategoriesManagement: NextPageWithLayout = () => {
             </div>
 
             <div className="flex flex-col-reverse lg:flex-row justify-between my-10 lg:me-48 gap-4 mx-auto md:w-2/3 sm:w-full">
-
                 <div className="w-full md:w-2/5">
                   <CommonSearchInput searchValue={search} setSearchValue={setSearch} placeholder={"Search Category by name"} />
                 </div>
-
                 <div className="self-end">
                   <CategoryCreateModal createFunction={handleCreate} catName={newCatName} setCatName={setNewCatName} 
                   dialogOpen={createDialogOpen} setDialogOpen={setCreateDialogOpen} />
@@ -92,8 +85,6 @@ const AdminCategoriesManagement: NextPageWithLayout = () => {
             </div>
             <CategoriesTable categories={currentData} deleteFunction={handleDelete} firstItemIndex={indexOfFirstPage}/>
             <CommonPagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
-
-            
         </div>
     )
 }
