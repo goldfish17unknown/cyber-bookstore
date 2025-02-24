@@ -7,7 +7,7 @@ import { ReactElement, useEffect, useState } from "react"
 import useCategoryStore from "@/store/CategoryStore"
 import CommonPagination from "@/components/custom/admin/CommonPagination"
 import toast from "react-hot-toast"
-import AdminLayout from "@/components/layouts/AdminLayout"
+import {AdminLayout} from "@/components/layouts/AdminLayout"
 
 
 const AdminCategoriesManagement: NextPageWithLayout = () => {
@@ -85,8 +85,16 @@ const AdminCategoriesManagement: NextPageWithLayout = () => {
                   dialogOpen={createDialogOpen} setDialogOpen={setCreateDialogOpen} />
                 </div>
             </div>
-            <CategoriesTable categories={currentData} deleteFunction={handleDelete} firstItemIndex={indexOfFirstPage}/>
-            <CommonPagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
+
+            { loading ? (
+                <div className="text-center">Loading...</div>
+            ) : (
+                <>
+                <CategoriesTable categories={currentData} deleteFunction={handleDelete} firstItemIndex={indexOfFirstPage}/>
+                <CommonPagination currentPage={currentPage} totalPages={totalPages} onPageChange={setCurrentPage} />
+                </>
+            )}
+            
         </div>
     )
 }

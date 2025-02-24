@@ -27,7 +27,7 @@ const useAuthStore = create<AuthState>((set) => ({
                 throw new Error('Invalid credentials');
             }
             const data = await response.json()
-            set({ user: data.user, accessToken: data.access_token });
+            set({ user: data.user, accessToken: data.access_token, isAuthenticated: true });
 
             localStorage.setItem('access_token', data.access_token);
             localStorage.setItem('user', JSON.stringify(data.user));
@@ -46,7 +46,7 @@ const useAuthStore = create<AuthState>((set) => ({
                     }
                 })
             }
-            set({ user: null, accessToken: null});
+            set({ user: null, accessToken: null, isAuthenticated: false});
 
             localStorage.removeItem('access_token');
             localStorage.removeItem('user');
