@@ -90,8 +90,6 @@ const AdminCategoriesManagement: NextPageWithLayout = () => {
 }
 
 
-
-
 AdminCategoriesManagement.getLayout = function getLayout(page: ReactElement){
     return (
         <AdminLayout>

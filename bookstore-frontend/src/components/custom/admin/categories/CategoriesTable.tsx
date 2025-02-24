@@ -24,22 +24,37 @@ const CategoriesTable: React.FC<CategoriesTableProps> = ({ categories, deleteFun
 
            </TableHeader>
 
-           <TableBody>
-                {categories.map((category, index) => (
-                    <TableRow key={category.id}>
-                        <TableCell>{firstItemIndex + 1 + index}</TableCell>
-                        <TableCell>{category.name}</TableCell>
-                        <TableCell>
-                            <CategoryUpdateModal 
-                            category={category}  />
-
-                            < CommonDeleteModal deleteHandler={deleteFunction} deleteItemID={category.id} />
-                        </TableCell>
+           
+            { categories.length != 0 ? (
+                <TableBody>
+                    {
+                        categories.map((category, index) => (
+                            <TableRow key={category.id}>
+                                <TableCell>{firstItemIndex + 1 + index}</TableCell>
+                                <TableCell>{category.name}</TableCell>
+                                <TableCell>
+                                    <CategoryUpdateModal 
+                                    category={category}  />
+            
+                                    < CommonDeleteModal deleteHandler={deleteFunction} deleteItemID={category.id} />
+                                </TableCell>
+                            </TableRow>
+                        ))
+                    }
+                </TableBody>
+            )
+            
+             : (
+                <TableBody>
+                    <TableRow className="bg-gray-50">
+                        <TableCell colSpan={3} className="text-center">No data</TableCell>
                     </TableRow>
-
-                ))}
+                </TableBody>
                 
-           </TableBody>
+
+            )}
+                
+           
             
         </Table>
 
