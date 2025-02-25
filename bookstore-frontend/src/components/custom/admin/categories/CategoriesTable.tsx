@@ -21,7 +21,6 @@ const CategoriesTable: React.FC<CategoriesTableProps> = ({ categories, deleteFun
                     <TableHead className="w-3/6">Name</TableHead>
                     <TableHead className="w-2/6">Action</TableHead>
                </TableRow>
-
            </TableHeader>
 
            

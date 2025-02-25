@@ -1,6 +1,7 @@
 import { Author } from '@/types/common';
 import { create } from 'zustand';
 import useAuthStore from './AuthStore';
+import toast from 'react-hot-toast';
 
 interface AuthorState {
     authors: Author[];
@@ -12,7 +13,7 @@ interface AuthorState {
     hasMorePages: boolean;
     fetchAuthors: (search?: string) => Promise<void>;
     fetchSingleAuthor: (id: string) => Promise<Author>;
-    addAuthor: (name: string, bio: string, image?: File | null) => Promise<void>;
+    addAuthor: (name: string, bio: string, image?: File | null) => Promise<boolean>;
     updateAuthor: (id: number, name: string, bio: string, image?: File | null) => Promise<void>;
     deleteAuthor: (id: number) => Promise<void>;
     PickAuthor: (search?: string) => Promise<void>;
@@ -40,7 +41,8 @@ const useAuthorStore = create<AuthorState>((set, get) => ({
     fetchAuthors: async (search="") => {
         try {
             const token = useAuthStore.getState().accessToken;
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/authors?search=${search}&`, {
+            const currentPage = get().currentPage;
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/authors?search=${search}&page=${currentPage}`, {
                 method: 'GET',
                 headers: {
                     Authorization: `Bearer ${token}`,
@@ -88,9 +90,27 @@ const useAuthorStore = create<AuthorState>((set, get) => ({
                 },
                 body: formData,
             });
+            const responseData = await response.json()
             if(!response.ok){
-                throw new Error("Failed to create data")
+                if(responseData.errors?.name){
+                    toast.error("Validation Error: " + responseData.errors.name[0]);
+                    return false
+                }
+                if(responseData.errors?.bio){
+                    toast.error("Validation Error: " + responseData.errors.bio[0]);
+                    return false
+                }     
+                if(responseData.errors?.image){
+                    toast.error("Validation Error: " + responseData.errors.image[0]);
+                    return false
+                }               
+                else {
+                    toast.error("Failed to create author: " + responseData.message);
+                    return false
+                }    
             }
+            toast.success("Author created successfully");
+            return true
         } catch (error){
             throw error;
         }
@@ -105,7 +125,7 @@ const useAuthorStore = create<AuthorState>((set, get) => ({
             if(image){
                 form.append("image", image);
             }
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_KEY}/authors/${id}`,{
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/authors/${id}`,{
                 method: "PUT",
                 headers: {
                     Authorization: `Bearer ${token}`
@@ -121,13 +141,15 @@ const useAuthorStore = create<AuthorState>((set, get) => ({
         try{
             const token = useAuthStore.getState().accessToken;
             if(!token) throw new Error("Unauthorized");
-            const response = await fetch(`${process.env.NEXT_PUBLIC_API_KEY}/authors/${id}`, {
+            const response = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/authors/${id}`, {
                 method: 'DELETE',
                 headers: {
                     Authorization: `Bearer ${token}`,
                 }
             });
             if(!response.ok) throw new Error("Failed to delete book");
+
+            toast.success("Author deleted successfully.")
         } catch(error){
             throw error;
         }

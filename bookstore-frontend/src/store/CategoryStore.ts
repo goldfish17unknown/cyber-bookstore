@@ -48,7 +48,6 @@ const useCategoryStore = create<CategoryState>((set, get) => ({
                 } else {
                     toast.error("Failed to create category: " + responseData.message);
                 }
-                toast
                 return false;
             }
             return true
@@ -80,7 +79,7 @@ const useCategoryStore = create<CategoryState>((set, get) => ({
                 } else {
                     toast.error("Failed to create category: " + responseData.message);
                 }
-                toast
+
                 return false;
             }
             return true;

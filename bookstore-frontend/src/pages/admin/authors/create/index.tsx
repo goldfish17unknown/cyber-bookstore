@@ -3,9 +3,11 @@ import { useRouter } from "next/router";
 import { AdminLayout } from "@/components/layouts/AdminLayout";
 import { NextPageWithLayout } from "@/pages/_app";
 import { ReactElement, useState } from "react";
+import useAuthorStore from "@/store/AuthorStore";
 
 
 const AdminAuthorCreate: NextPageWithLayout = () => {
+    const { addAuthor } = useAuthorStore()
     const [name, setName] = useState<string>("");
     const [bio, setBio] = useState<string>("");
     const [image, setImage] = useState<File| null>(null);
@@ -14,26 +16,11 @@ const AdminAuthorCreate: NextPageWithLayout = () => {
     const handleCreateAuthor = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         try{
-            const formData = new FormData();
-            formData.append("name", name);
-            formData.append("bio", bio);
-            if (image) {
-                formData.append("image", image);
-            }
-
-            const response = await fetch(`http://localhost:8000/api/authors`, {
-                method: 'POST',
-                body: formData,
-            });
-            if (!response.ok){
-                throw new Error("Failed to create data")
-            }
-            const data = await response.json();
+            const data = await addAuthor(name, bio, image)
 
             if (data){
                 router.push({
                     pathname: '/admin/authors',
-                    query: { successCreate: "Author created successfully!" }
                 });
             }
 

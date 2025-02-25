@@ -51,15 +51,17 @@ Route::middleware([AdminMiddleware::class])->group(function() {
     Route::put('categories/{id}', [CategoryController::class, 'update']);
     Route::delete('categories/{id}', [CategoryController::class, 'destroy']);
 
+    //* Authors tab
+    Route::get('authors', [AuthorController::class, 'index']);
+    Route::post('authors', [AuthorController::class, 'store']);
+    Route::put('authors/{id}', [AuthorController::class, 'update']);
+    Route::delete('authors/{id}', [AuthorController::class, 'destroy']);
+
 
 });
 
 
-//* Authors tab
-Route::get('authors', [AuthorController::class, 'index']);
-Route::post('authors', [AuthorController::class, 'store']);
-Route::put('authors/{id}', [AuthorController::class, 'update']);
-Route::delete('authors/{id}', [AuthorController::class, 'destroy']);
+
 
 
 

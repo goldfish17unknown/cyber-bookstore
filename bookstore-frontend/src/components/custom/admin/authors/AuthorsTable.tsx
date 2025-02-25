@@ -22,26 +22,34 @@ const AuthorsTable: React.FC<AuthorsTableProps> = ({ authors }) => {
                     <TableHead className="w-1/6">Actions</TableHead>
                 </TableRow>
             </TableHeader>
-
-            <TableBody>
-                {authors.map((author) => (
-                    <TableRow key={author.id}>
-                        <TableCell>    
-                            <img src={author.image ? `http://localhost:8000/${author.image}` : "/placeholders/user-placeholder.png"}
-                            alt="author" className="w-12 h-12 rounded-full" />
-                        </TableCell>
-                        <TableCell>{author.name}</TableCell>
-                        <TableCell>   
-                            <Button variant={"green"} size={"sm"} asChild>
-                                <Link href={`/admin/authors/${author.id}`}>
-                                    View
-                                </Link>
-                            </Button>
-                        </TableCell>
-                    </TableRow>
+            {
+                authors.length != 0 ? (
+                    <TableBody>
+                    {authors.map((author) => (
+                        <TableRow key={author.id}>
+                            <TableCell>    
+                                <img src={author.image ? `http://localhost:8000/${author.image}` : "/placeholders/user-placeholder.png"}
+                                alt="author" className="w-12 h-12 rounded-full" />
+                            </TableCell>
+                            <TableCell>{author.name}</TableCell>
+                            <TableCell>   
+                                <Button variant={"green"} size={"sm"} asChild>
+                                    <Link href={`/admin/authors/${author.id}`}>
+                                        View
+                                    </Link>
+                                </Button>
+                            </TableCell>
+                        </TableRow>
                 ))}  
             </TableBody>
-            
+                ) : (
+                    <TableBody>
+                        <TableRow className="bg-gray-50">
+                            <TableCell colSpan={3} className="text-center">No data</TableCell>
+                        </TableRow>
+                    </TableBody>
+                    )
+            }            
         </Table>
     )
 }

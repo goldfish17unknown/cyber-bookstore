@@ -20,10 +20,15 @@ class AuthorController extends Controller
 
 
     // uses in admin panel, book create dropdown
-    public function index(){
-        $authors = $this->authorService->allAuthors();
-        return response()->json(
-            AuthorResource::collection($authors)
+    public function index(Request $request){
+        $search = $request->query("search");
+        $authors = $this->authorService->allAuthors($search);
+        return response()->json([
+            'data' => AuthorResource::collection($authors),
+            'current_page' => $authors->currentPage(),
+            'last_page' => $authors->LastPage(),
+            'has_more_pages' => $authors->hasMorePages()
+        ]
         , 200);
     }
 

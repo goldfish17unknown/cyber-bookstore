@@ -11,9 +11,15 @@ class AuthorService
      */
     public function __construct(){}
 
-    public function allAuthors()
+    public function allAuthors($search = null)
     {
-        $authors = Author::all();
+        $query = Author::query();
+
+        if(!empty($search)){
+            $query->where('name', 'LIKE', "%{$search}%");
+        }
+
+        $authors = $query->latest()->paginate(8);
         return $authors;
     }
 
